@@ -84,7 +84,7 @@ CGameManager::CGameManager(int argc, char** argv)
 	// Create Audio Syetem
 	CreateAudioSystem();
 	// Creates and plays the background music
-	CAudio backingTrack("Resources/Audio/Background.mp3", audioSystem);
+	CAudio backingTrack("Resources/Audio/Background.mp3", audioSystem, true);
 	backingTrack.PlaySound();
 
 	glGenVertexArrays(1, &VAO);

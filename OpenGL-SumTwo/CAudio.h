@@ -18,7 +18,7 @@
 class CAudio
 {
 public:
-	CAudio(const char* fileLocation, FMOD::System* audioSystem);
+	CAudio(const char* fileLocation, FMOD::System* audioSystem, bool looping);
 	~CAudio();
 	
 	FMOD::System* classAudio;
