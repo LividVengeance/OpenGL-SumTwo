@@ -37,12 +37,12 @@ void CInput::KeyboardUp(unsigned char key, int x, int y)
 	KeyState[key] = INPUT_UP;
 }
 
-void MousePassiveMove(int x, int y)
+void CInput::MousePassiveMove(int x, int y)
 {
 	std::cout << "Passive x: " << x << " | y: " << y << std::endl;
 }
 
-void MouseMove(int x, int y)
+void CInput::MouseMove(int x, int y)
 {
 	std::cout << "Clicked x: " << x << " | y: " << y << std::endl;
 }

@@ -18,16 +18,14 @@
 class CAudio
 {
 public:
-	CAudio(const char* fileLocation);
+	CAudio(const char* fileLocation, FMOD::System* audioSystem);
 	~CAudio();
-
+	
+	FMOD::System* classAudio;
+	FMOD::Sound* newSound;
 	void PlaySound();
 
 private:
-	System* audioSystem;
-	Sound* newSound;
-
 	const char* fileLocation;
-	bool AudioInit();
 };
 

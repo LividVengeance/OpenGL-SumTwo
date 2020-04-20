@@ -29,14 +29,16 @@ public:
 
 	void ProcessInput();
 
-private:
-	
-
-	// Mosue Inputs
-	void MouseClick(int button, int state, int x, int y);
-
 	// KeyBoard Inputs
 	void KeyboardDown(unsigned char key, int x, int y);
 	void KeyboardUp(unsigned char key, int x, int y);
+
+	// Mosue Inputs
+	void MousePassiveMove(int x, int y);
+	void MouseClick(int button, int state, int x, int y);
+	void MouseMove(int x, int y);
+private:
+	
+
 };
 

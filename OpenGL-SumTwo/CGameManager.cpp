@@ -4,7 +4,6 @@
 
 CGameManager* globalPointerGM;
 
-
 void RenderRedirect()
 {
 	/// Allows glut to look at func in class
@@ -15,6 +14,23 @@ void UpdateRedirect()
 {
 	/// Allows glut to look at func in class
 	globalPointerGM->Update();
+}
+
+
+void CGameManager::CreateAudioSystem()
+{
+	/// Creates the audio system
+	FMOD_RESULT result;
+	result = System_Create(&audioSystem);
+	if (result != FMOD_OK)
+	{
+		std::cout << "Failed to create audioSystem" << endl;
+	}
+	result = audioSystem->init(100, FMOD_INIT_NORMAL | FMOD_INIT_3D_RIGHTHANDED, 0);
+	if (result != FMOD_OK)
+	{
+		cout << "Failed to initialize the audioSystem" << endl;
+	}
 }
 
 CGameManager::CGameManager(int argc, char** argv)
@@ -61,13 +77,15 @@ CGameManager::CGameManager(int argc, char** argv)
 
 	program = ShaderLoader::CreateProgram("Resources/Shaders/Basic.vs",
 		"Resources/Shaders/Basic.fs");
+	
 
+	GameInputs = new CInput();
 
-
-	CAudio backingTrack("Resources/Audio/Background.mp3");
+	// Create Audio Syetem
+	CreateAudioSystem();
+	// Creates and plays the background music
+	CAudio backingTrack("Resources/Audio/Background.mp3", audioSystem);
 	backingTrack.PlaySound();
-
-
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -202,8 +220,7 @@ void CGameManager::Update()
 
 	audioSystem->update();
 
-	CInput test;
-	test.ProcessInput();
+	GameInputs->ProcessInput();
 
 	glutPostRedisplay();
 }
@@ -249,20 +266,73 @@ GLint CGameManager::GenerateTextures()
 	return (0);
 }
 
+void CGameManager::KeyBoardDown(unsigned char key, int x, int y)
+{
+	GameInputs->KeyboardDown(key, x, y);
+}
+
+void CGameManager::KeyBoardUp(unsigned char key, int x, int y)
+{
+	GameInputs->KeyboardUp(key, x, y);
+}
+
+void CGameManager::MousePassiveMove(int x, int y)
+{
+	GameInputs->MousePassiveMove(x, y);
+}
+
+void CGameManager::MouseClick(int button, int state, int x, int y)
+{
+	GameInputs->MouseClick(button, state, x, y);
+}
+
+void CGameManager::MouseMove(int x, int y)
+{
+	GameInputs->MouseMove(x, y);
+}
+
+void KeyboardDownRedirect(unsigned char key, int x, int y)
+{
+	globalPointerGM->KeyBoardDown(key, x, y);
+}
+
+void KeyboardUpRedirect(unsigned char key, int x, int y)
+{
+	globalPointerGM->KeyBoardUp(key, x, y);
+}
+
+void MousePassiveMoveRedirect(int x, int y)
+{
+	globalPointerGM->MousePassiveMove(x, y);
+}
+
+void MouseClickRedirect(int button, int state, int x, int y)
+{
+	globalPointerGM->MouseClick(button, state, x, y);
+}
+
+void MouseMoveRedirect(int x, int y)
+{
+	globalPointerGM->MouseMove(x, y);
+}
+
 void CGameManager::ManagerMain()
 {
 	/// Register callbacks
 	glutDisplayFunc(RenderRedirect);
 	glutIdleFunc(UpdateRedirect);
 
-	// KeyBoard Inputs
-	glutKeyboardFunc(KeyboardDown);
-	glutKeyboardUpFunc(KeyboardUp);
+	// Updating audio in audioSystem
+	audioSystem->update();
 
+	// KeyBoard Inputs
+	glutKeyboardFunc(KeyboardDownRedirect);
+	glutKeyboardUpFunc(KeyboardUpRedirect);
+	
 	// Mouse Inputs
-	glutMouseFunc(MouseClick);
-	glutMotionFunc(MouseMove);
-	glutPassiveMotionFunc(MousePassiveMove);
+	glutMouseFunc(MouseClickRedirect);
+	glutMotionFunc(MouseMoveRedirect);
+	glutPassiveMotionFunc(MousePassiveMoveRedirect);
 
 	GenerateTextures();
 	glutMainLoop();

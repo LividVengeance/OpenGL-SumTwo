@@ -19,7 +19,6 @@
 
 using namespace glm;
 using namespace std;
-using namespace FMOD;
 
 class CGameManager
 {
@@ -27,6 +26,13 @@ public:
 	CGameManager(int argc, char** argv);
 	~CGameManager();
 
+	void KeyBoardDown(unsigned char key, int x, int y);
+	void KeyBoardUp(unsigned char key, int x, int y);
+	void MousePassiveMove(int x, int y);
+	void MouseClick(int button, int state, int x, int y);
+	void MouseMove(int x, int y);
+
+	void CreateAudioSystem();
 	void Update();
 	void Render();
 	void ManagerMain();
@@ -39,6 +45,10 @@ private:
 
 	GLuint texture;
 	GLuint texture1;
+
+	FMOD::System* audioSystem;
+	
+	CInput* GameInputs;
 
 	GLfloat currentTime;
 	GLint program;

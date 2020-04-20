@@ -1,8 +1,8 @@
 #include "CAudio.h"
 
-CAudio::CAudio(const char* givenFileLocation)
+CAudio::CAudio(const char* givenFileLocation, FMOD::System* audioSystem)
 {
-	AudioInit();
+	classAudio = audioSystem;
 	fileLocation = givenFileLocation;
 	
 	FMOD_RESULT result;
@@ -15,27 +15,11 @@ CAudio::CAudio(const char* givenFileLocation)
 
 CAudio::~CAudio()
 {
-	newSound->release();
+	//newSound->release();
 }
 
-bool CAudio::AudioInit()
-{
-	FMOD_RESULT result;
-	result = System_Create(&audioSystem);
-	if (result != FMOD_OK)
-	{
-		return(false);
-	}
-
-	result = audioSystem->init(100, FMOD_INIT_NORMAL | FMOD_INIT_3D_RIGHTHANDED, 0);
-	if (result != FMOD_OK)
-	{
-		return(false);
-	}
-	return(true);
-}
 
 void CAudio::PlaySound()
 {
-	audioSystem->playSound(newSound, 0, false, 0);
+	classAudio->playSound(newSound, 0, false, 0);
 }
