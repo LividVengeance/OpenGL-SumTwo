@@ -4,20 +4,6 @@
 
 CGameManager* globalPointerGM;
 
-System* audioSystem;
-Sound* fxThump;
-Sound* trackBackground;
-
-enum InputState
-{
-	INPUT_UP,
-	INPUT_DOWN,
-	INPUT_UP_FIRST,
-	INPUT_DOWN_FIRST,
-};
-
-InputState KeyState[255];
-InputState MouseState[3];
 
 void RenderRedirect()
 {
@@ -29,66 +15,6 @@ void UpdateRedirect()
 {
 	/// Allows glut to look at func in class
 	globalPointerGM->Update();
-}
-
-void ProcessInput()
-{
-	if (KeyState['w'] == INPUT_DOWN)
-	{
-		cout << "move object";
-		audioSystem->playSound(fxThump, 0, false, 0);
-		
-		/// Destroys sounds/sound system
-		//fxThump->release();
-		//audioSystem->release();
-	}
-}
-
-void MouseClick(int button, int state, int x, int y)
-{
-	if (button >= 3)
-	{
-		return;
-	}
-
-	MouseState[button] = ((state == GLUT_DOWN) ? INPUT_DOWN : INPUT_UP);
-}
-
-void MousePassiveMove(int x, int y)
-{
-	cout << "Passive x: " << x << " | y: " << y << endl;
-}
-
-void MouseMove(int x, int y)
-{
-	cout << "Clicked x: " << x << " | y: " << y << endl;
-}
-
-void KeyboardDown(unsigned char key, int x, int y)
-{
-	KeyState[key] = INPUT_DOWN;
-}
-
-void KeyboardUp(unsigned char key, int x, int y)
-{
-	KeyState[key] = INPUT_UP;
-}
-
-bool AudioInit()
-{
-	FMOD_RESULT result;
-	result = System_Create(&audioSystem);
-	if (result != FMOD_OK)
-	{
-		return(false);
-	}
-
-	result = audioSystem->init(100, FMOD_INIT_NORMAL | FMOD_INIT_3D_RIGHTHANDED, 0);
-	if (result != FMOD_OK)
-	{
-		return(false);
-	}
-	return(true);
 }
 
 CGameManager::CGameManager(int argc, char** argv)
@@ -138,24 +64,8 @@ CGameManager::CGameManager(int argc, char** argv)
 
 
 
-
-
-	AudioInit();
-
-	FMOD_RESULT result;
-	result = audioSystem->createSound("Resources/Audio/Thump.wav",
-		FMOD_DEFAULT,
-		0,
-		&fxThump);
-
-	audioSystem->createSound("Resources/Audio/Background.mp3",
-		FMOD_DEFAULT,
-		0,
-		&trackBackground);
-
-	audioSystem->playSound(trackBackground, 0, 0, 0);
-
-
+	CAudio backingTrack("Resources/Audio/Background.mp3");
+	backingTrack.PlaySound();
 
 
 
@@ -292,7 +202,8 @@ void CGameManager::Update()
 
 	audioSystem->update();
 
-	ProcessInput();
+	CInput test;
+	test.ProcessInput();
 
 	glutPostRedisplay();
 }
@@ -337,7 +248,6 @@ GLint CGameManager::GenerateTextures()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	return (0);
 }
-
 
 void CGameManager::ManagerMain()
 {

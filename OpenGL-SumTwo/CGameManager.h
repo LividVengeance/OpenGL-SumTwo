@@ -10,10 +10,11 @@
 #include "gtc/matrix_transform.hpp"
 #include "gtc/type_ptr.hpp"
 
+#include "CAudio.h"
 #include "CCamera.h"
+#include "CInput.h"
 #include "CObject.h"
 #include "CShaderLoader.h"
-
 
 
 using namespace glm;
