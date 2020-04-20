@@ -1,10 +1,10 @@
 #pragma once
 
-class CInput
+class CAduio
 {
 public:
-	CInput();
-	~CInput();
+	CAduio();
+	~CAduio();
 
 private:
 

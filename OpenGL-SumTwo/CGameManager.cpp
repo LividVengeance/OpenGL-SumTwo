@@ -37,6 +37,10 @@ void ProcessInput()
 	{
 		cout << "move object";
 		audioSystem->playSound(fxThump, 0, false, 0);
+		
+		/// Destroys sounds/sound system
+		//fxThump->release();
+		//audioSystem->release();
 	}
 }
 

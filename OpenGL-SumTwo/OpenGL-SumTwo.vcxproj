@@ -150,6 +150,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAudio.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CGameManager.h" />
     <ClInclude Include="CInput.h" />
@@ -161,6 +162,7 @@
     <None Include="Basic.vs" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAudio.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CGameManager.cpp" />
     <ClCompile Include="CInput.cpp" />
