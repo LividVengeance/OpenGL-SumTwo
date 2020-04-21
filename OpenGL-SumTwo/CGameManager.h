@@ -15,6 +15,7 @@
 #include "CInput.h"
 #include "CObject.h"
 #include "CShaderLoader.h"
+#include "CTextLabel.h"
 
 
 using namespace glm;
@@ -49,6 +50,7 @@ private:
 	FMOD::System* audioSystem;
 	
 	CInput* GameInputs;
+	CTextLabel* label;
 
 	GLfloat currentTime;
 	GLint program;

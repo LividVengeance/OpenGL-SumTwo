@@ -3,10 +3,10 @@
 #include<fstream>
 #include<vector>
 
-ShaderLoader::ShaderLoader(void) {}
-ShaderLoader::~ShaderLoader(void) {}
+CShaderLoader::CShaderLoader(void) {}
+CShaderLoader::~CShaderLoader(void) {}
 
-GLuint ShaderLoader::CreateProgram(const char* vertexShaderFilename, const char* fragmentShaderFilename)
+GLuint CShaderLoader::CreateProgram(const char* vertexShaderFilename, const char* fragmentShaderFilename)
 {
 	GLuint program = glCreateProgram();
 
@@ -30,7 +30,7 @@ GLuint ShaderLoader::CreateProgram(const char* vertexShaderFilename, const char*
 	return program;
 }
 
-GLuint ShaderLoader::CreateShader(GLenum shaderType, const char* shaderName)
+GLuint CShaderLoader::CreateShader(GLenum shaderType, const char* shaderName)
 {
 
 	GLint shaderID = glCreateShader(shaderType);
@@ -55,7 +55,7 @@ GLuint ShaderLoader::CreateShader(GLenum shaderType, const char* shaderName)
 	return shaderID;
 }
 
-std::string ShaderLoader::ReadShaderFile(const char* filename)
+std::string CShaderLoader::ReadShaderFile(const char* filename)
 {
 	// Open the file for reading
 	std::ifstream file(filename, std::ios::in);
@@ -79,7 +79,7 @@ std::string ShaderLoader::ReadShaderFile(const char* filename)
 	return shaderCode;
 }
 
-void ShaderLoader::PrintErrorDetails(bool isShader, GLuint id, const char* name)
+void CShaderLoader::PrintErrorDetails(bool isShader, GLuint id, const char* name)
 {
 	int infoLogLength = 0;
 	// Retrieve the length of characters needed to contain the info log

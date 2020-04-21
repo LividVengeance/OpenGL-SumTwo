@@ -1,15 +1,14 @@
 #version 450 core
 
-in vec3 fragColor;
 in vec2 fragTexCoord;
 
-out vec4 color;
+out vec4 colour;
 
-uniform float currentTime;
 uniform sampler2D tex;
-uniform sampler2D tex1;
+uniform vec3 textColour;
 
 void main()
 {
-	color = mix(texture(tex, fragTexCoord), texture(tex1, fragTexCoord), abs(sin(currentTime)));
+	vec4 sampled = vec4(1.0f, 1.0f, 1.0f, texture(tex, fragTexCoord).r);
+	colour = vec4(textColour, 1.0f) * sampled;
 }

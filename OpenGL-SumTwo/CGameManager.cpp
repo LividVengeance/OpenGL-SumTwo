@@ -4,18 +4,13 @@
 
 CGameManager* globalPointerGM;
 
-void RenderRedirect()
+struct FontChar
 {
-	/// Allows glut to look at func in class
-	globalPointerGM->Render();
-}
-
-void UpdateRedirect()
-{
-	/// Allows glut to look at func in class
-	globalPointerGM->Update();
-}
-
+	GLuint TextureIS;
+	ivec2 Size;
+	ivec2 Bearing;
+	GLuint Advance;
+};
 
 void CGameManager::CreateAudioSystem()
 {
@@ -75,9 +70,14 @@ CGameManager::CGameManager(int argc, char** argv)
 	glFrontFace(GL_CCW);
 	glEnable(GL_CULL_FACE);
 
-	program = ShaderLoader::CreateProgram("Resources/Shaders/Basic.vs",
+	program = CShaderLoader::CreateProgram("Resources/Shaders/Basic.vs",
 		"Resources/Shaders/Basic.fs");
 	
+
+	// Setup the UI
+	label = new CTextLabel("This is some text", "Resources/Fonts/arial.ttf", glm::vec2(-350.0f, 300.0f));
+
+
 
 	GameInputs = new CInput();
 
@@ -155,6 +155,10 @@ void CGameManager::Render()
 	glUniform1i(glGetUniformLocation(program, "tex1"), 1);
 
 	glBindVertexArray(VAO);		// Bind VAO
+
+	// Render the UI elements
+	label->Render();
+
 
 	//		Ceate First Hex		//
 	CObject objOne;
@@ -256,8 +260,6 @@ GLint CGameManager::GenerateTextures()
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 1);
 
-
-
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
@@ -314,6 +316,18 @@ void MouseClickRedirect(int button, int state, int x, int y)
 void MouseMoveRedirect(int x, int y)
 {
 	globalPointerGM->MouseMove(x, y);
+}
+
+void RenderRedirect()
+{
+	/// Allows glut to look at func in class
+	globalPointerGM->Render();
+}
+
+void UpdateRedirect()
+{
+	/// Allows glut to look at func in class
+	globalPointerGM->Update();
 }
 
 void CGameManager::ManagerMain()
