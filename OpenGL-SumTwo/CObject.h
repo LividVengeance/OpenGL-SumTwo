@@ -10,10 +10,6 @@
 #include "gtc/type_ptr.hpp"
 
 #include "CCamera.h"
-#include "CGameManager.h"
-#include "CShaderLoader.h"
-
-using namespace glm;
 
 class CObject
 {
@@ -21,10 +17,10 @@ public:
 	CObject();
 	~CObject();
 
-	mat4 Translation(vec3 objPosition);
-	mat4 Rotation(vec3 rotationAxis, float angle);
-	mat4 Scale(vec3 objScale, float scaleAmount);
-	mat4 Combine(mat4 translationMatrix, mat4 rotationMatrix, mat4 scaleMatrix);
+	glm::mat4 Translation(glm::vec3 objPosition);
+	glm::mat4 Rotation(glm::vec3 rotationAxis, float angle);
+	glm::mat4 Scale(glm::vec3 objScale, float scaleAmount);
+	glm::mat4 Combine(glm::mat4 translationMatrix, glm::mat4 rotationMatrix, glm::mat4 scaleMatrix);
 
 private:
 

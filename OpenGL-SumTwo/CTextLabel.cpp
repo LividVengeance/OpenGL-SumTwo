@@ -1,20 +1,23 @@
 #include "CTextLabel.h"
 
-CTextLabel::CTextLabel(	std::string text,
+CTextLabel::CTextLabel(	std::string newText,
 						std::string font,
 						glm::vec2 pos,
-						glm::vec3 colour = glm::vec3(1.0f, 1.0f, 1.0f),
-						float scale = 1.0f)
+						glm::vec3 colour ,
+						float scale )
 {
-	text = newText;
+	colour = glm::vec3(1.0f, 1.0f, 1.0f);
+	scale = 1.0f;
+	newText = text;
 	SetColour(colour);
 	SetScale(scale);
 	SetPosition(pos);
 
-	GLfloat halfWidth = (GLfloat)Utilities::SCR_WIDTH * 0.5;
-	GLfloat halfHeight = (GLfloat)Utilities::SCR_HEIGHT * 0.5;
+	GLfloat halfWidth = (GLfloat)Utils::SCR_WIDTH * 0.5;
+	GLfloat halfHeight = (GLfloat)Utils::SCR_HEIGHT * 0.5;
+
 	proj = glm::ortho(-halfWidth, halfWidth, -halfHeight, halfHeight);
-	program = CShaderLoader::GetInstance()->CreateProgram("Text.vs", "Text.fs");
+	program = CShaderLoader::CreateProgram("Text.vs", "Text.fs");
 
 	FT_Library ft;
 	FT_Face face;
@@ -26,7 +29,7 @@ CTextLabel::CTextLabel(	std::string text,
 	}
 
 	// Load dont as face
-	if (FT_New_Face(ft, newFont.c_str(), 0, &face) != 0)
+	if (FT_New_Face(ft, font.c_str(), 0, &face) != 0)
 	{
 		std::cout << "ERROR - FREETYPE: Faild to load font" << std::endl;
 	}

@@ -1,7 +1,5 @@
 #include "CShaderLoader.h" 
-#include<iostream>
-#include<fstream>
-#include<vector>
+
 
 CShaderLoader::CShaderLoader(void) {}
 CShaderLoader::~CShaderLoader(void) {}

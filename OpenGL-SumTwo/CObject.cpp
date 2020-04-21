@@ -25,30 +25,30 @@ CObject::~CObject()
 {
 }
 
-mat4 CObject::Translation(vec3 objPosition)
+glm::mat4 CObject::Translation(glm::vec3 objPosition)
 {
 	/// Creates Translation Matrax of Objects Postion
-	mat4 translationMatrix = translate(mat4(), objPosition);
+	mat4 translationMatrix = translate(glm::mat4(), objPosition);
 	return(translationMatrix);
 }
 
-mat4 CObject::Rotation(vec3 rotationAxis, float angle)
+glm::mat4 CObject::Rotation(glm::vec3 rotationAxis, float angle)
 {
 	/// Creates Rotation Matrix Given Angle and Rotation Axis
-	mat4 rotationMatrix = rotate(mat4(), radians(angle), rotationAxis);
+	glm::mat4 rotationMatrix = rotate(glm::mat4(), radians(angle), rotationAxis);
 	return(rotationMatrix);
 }
 
-mat4 CObject::Scale(vec3 objScale, float scaleAmount)
+glm::mat4 CObject::Scale(glm::vec3 objScale, float scaleAmount)
 {
 	/// Create Scale Matrix of Object
-	mat4 scaleMatrix = scale(mat4(), objScale * scaleAmount);
+	glm::mat4 scaleMatrix = scale(glm::mat4(), objScale * scaleAmount);
 	return(scaleMatrix);
 }
 
-mat4 CObject::Combine(mat4 translationMatrix, mat4 rotationMatrix, mat4 scaleMatrix)
+glm::mat4 CObject::Combine(glm::mat4 translationMatrix, glm::mat4 rotationMatrix, glm::mat4 scaleMatrix)
 {
 	// Create model matrix to combine them
-	mat4 model = translationMatrix * rotationMatrix * scaleMatrix;
+	glm::mat4 model = translationMatrix * rotationMatrix * scaleMatrix;
 	return(model);
 }

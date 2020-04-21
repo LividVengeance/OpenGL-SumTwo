@@ -4,14 +4,6 @@
 
 CGameManager* globalPointerGM;
 
-struct FontChar
-{
-	GLuint TextureIS;
-	ivec2 Size;
-	ivec2 Bearing;
-	GLuint Advance;
-};
-
 void CGameManager::CreateAudioSystem()
 {
 	/// Creates the audio system
@@ -52,7 +44,7 @@ CGameManager::CGameManager(int argc, char** argv)
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(50, 50);
-	glutInitWindowSize(800, 600);
+	glutInitWindowSize(Utils::SCR_WIDTH, Utils::SCR_HEIGHT);
 	glutCreateWindow("OpenGL Window Title");
 
 	// Sets up all GL function callbacks based on pc hardware

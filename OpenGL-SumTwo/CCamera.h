@@ -9,9 +9,6 @@
 #include "gtc/matrix_transform.hpp"
 #include "gtc/type_ptr.hpp"
 
-#include "CGameManager.h"
-#include "CObject.h"
-#include "CShaderLoader.h"
 
 using namespace glm;
 

@@ -16,6 +16,7 @@
 #include "CObject.h"
 #include "CShaderLoader.h"
 #include "CTextLabel.h"
+#include "Utilities.h"
 
 
 using namespace glm;

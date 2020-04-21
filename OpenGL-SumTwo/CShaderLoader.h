@@ -5,7 +5,10 @@
 #include <freeglut.h>
 
 // Library Includes
-#include <iostream>
+#include<iostream>
+#include<fstream>
+#include<vector>
+
 
 class CShaderLoader
 {

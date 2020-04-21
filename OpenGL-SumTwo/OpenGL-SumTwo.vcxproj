@@ -157,6 +157,7 @@
     <ClInclude Include="CObject.h" />
     <ClInclude Include="CShaderLoader.h" />
     <ClInclude Include="CTextLabel.h" />
+    <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAudio.cpp" />

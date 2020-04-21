@@ -15,8 +15,16 @@
 #include <string>
 #include <iostream>
 
-// Local Includes
-#include  "CShaderLoader.h"
+#include "Utilities.h"
+#include "CShaderLoader.h"
+
+struct FontChar
+{
+	GLuint		TextureID;
+	glm::ivec2	Size;
+	glm::ivec2	Bearing;
+	GLuint		Advance;
+};
 
 class CTextLabel
 {
@@ -28,7 +36,7 @@ public:
 		glm::vec3 colour = glm::vec3(1.0f, 1.0f, 1.0f),
 		float scale = 1.0f);
 
-	~CTextLabel() {};
+	~CTextLabel();
 
 	void Render();
 	void SetText(std::string newText) { text = newText; };
@@ -38,10 +46,10 @@ public:
 private:
 	GLuint GenerateTexture(FT_Face face);
 
-	std::string text;
-	GLfloat scale;
-	glm::vec3 colour;
-	glm::vec2 position;
+	std::string	text;
+	GLfloat		scale;
+	glm::vec3	colour;
+	glm::vec2	position;
 
 	GLuint VAO, VBO, program;
 	glm::mat4 proj;

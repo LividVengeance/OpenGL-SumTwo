@@ -18,7 +18,7 @@ CAudio::CAudio(const char* givenFileLocation, FMOD::System* audioSystem, bool lo
 	
 	if (result != FMOD_OK)
 	{
-		cout << "Failed to create sound from file location: " << fileLocation << endl;
+		std::cout << "Failed to create sound from file location: " << fileLocation << std::endl;
 	}
 }
 
