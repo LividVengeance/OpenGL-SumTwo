@@ -82,7 +82,6 @@ CTextLabel::CTextLabel(	std::string newText,
 }
 
 CTextLabel::~CTextLabel()
-
 {
 }
 

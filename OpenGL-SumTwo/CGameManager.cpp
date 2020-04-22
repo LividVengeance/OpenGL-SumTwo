@@ -45,6 +45,7 @@ CGameManager::CGameManager(int argc, char** argv)
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(50, 50);
 	glutInitWindowSize(Utils::SCR_WIDTH, Utils::SCR_HEIGHT);
+	//glutInitWindowSize(800, 600);
 	glutCreateWindow("OpenGL Window Title");
 
 	// Sets up all GL function callbacks based on pc hardware
@@ -67,9 +68,9 @@ CGameManager::CGameManager(int argc, char** argv)
 	
 
 	// Setup the UI
-	label = new CTextLabel("This is some text", "Resources/Fonts/arial.ttf", glm::vec2(-350.0f, 300.0f));
+	label = new CTextLabel("This is some text", "Resources/Fonts/arial.ttf", glm::vec2(0.0f, 0.0f));
 
-
+	GenerateTextures();
 
 	GameInputs = new CInput();
 
@@ -125,7 +126,6 @@ CGameManager::CGameManager(int argc, char** argv)
 
 	GLuint translateLoc = glGetUniformLocation(program, "translation");
 	glUniformMatrix4fv(translateLoc, 1, GL_FALSE, glm::value_ptr(translationMatrix));
-
 }
 
 CGameManager::~CGameManager()
@@ -147,9 +147,6 @@ void CGameManager::Render()
 	glUniform1i(glGetUniformLocation(program, "tex1"), 1);
 
 	glBindVertexArray(VAO);		// Bind VAO
-
-	// Render the UI elements
-	label->Render();
 
 
 	//		Ceate First Hex		//
@@ -202,6 +199,9 @@ void CGameManager::Render()
 	GLint currentTimeLoc = glGetUniformLocation(program, "currentTime");
 	glUniform1f(currentTimeLoc, currentTime);
 
+
+	label->Render();
+
 	glBindVertexArray(0);		// Unbinding VAO
 	glUseProgram(0);
 
@@ -251,6 +251,8 @@ GLint CGameManager::GenerateTextures()
 	glGenerateMipmap(GL_TEXTURE_2D);
 	SOIL_free_image_data(image);
 	glBindTexture(GL_TEXTURE_2D, 1);
+
+
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
