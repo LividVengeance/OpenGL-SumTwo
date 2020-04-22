@@ -45,7 +45,6 @@ CGameManager::CGameManager(int argc, char** argv)
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(50, 50);
 	glutInitWindowSize(Utils::SCR_WIDTH, Utils::SCR_HEIGHT);
-	//glutInitWindowSize(800, 600);
 	glutCreateWindow("OpenGL Window Title");
 
 	// Sets up all GL function callbacks based on pc hardware
@@ -65,12 +64,13 @@ CGameManager::CGameManager(int argc, char** argv)
 
 	program = CShaderLoader::CreateProgram("Resources/Shaders/Basic.vs",
 		"Resources/Shaders/Basic.fs");
-	
 
 	// Setup the UI
-	label = new CTextLabel("This is some text", "Resources/Fonts/arial.ttf", glm::vec2(0.0f, 0.0f));
+	label = new CTextLabel("This is some text hdfiugh kfdhg hdfgkjhd fkjgdf khdfghdk hgdfkjgh", "Resources/Fonts/arial.ttf", glm::vec2(-350.0f, 300.0f));
+	label->SetScale(0.5f);
+	//label->SetPosition(glm::vec2(-200, 0.0f));
+	label->SetColour(glm::vec3(0.0f, 0.0f, 1.0f));
 
-	GenerateTextures();
 
 	GameInputs = new CInput();
 
@@ -164,11 +164,11 @@ void CGameManager::Render()
 	mat4 scaleMatrix = objOne.Scale(objScale, scaleAmount);
 	// Create model matrix to combine them
 	mat4 model = objOne.Combine(translationMatrix, rotationMatrix, scaleMatrix);
-
+	
 	GLuint modelLoc = glGetUniformLocation(program, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 	glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);			// Draw First Hex
-
+	
 	//		Ceate Second Hex		//
 	CObject objTwo;
 	// Translation Matrix
@@ -184,7 +184,7 @@ void CGameManager::Render()
 	mat4 scaleMatrix1 = objTwo.Scale(objScale1, scaleAmount1);
 	// Create model matrix to combine them
 	mat4 model1 = objTwo.Combine(translationMatrix1, rotationMatrix1, scaleMatrix1);
-
+	
 	GLuint modelLoc1 = glGetUniformLocation(program, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model1));
 	glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0);			// Draw Second Hex
@@ -198,7 +198,6 @@ void CGameManager::Render()
 
 	GLint currentTimeLoc = glGetUniformLocation(program, "currentTime");
 	glUniform1f(currentTimeLoc, currentTime);
-
 
 	label->Render();
 

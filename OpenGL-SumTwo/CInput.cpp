@@ -14,6 +14,7 @@ void CInput::ProcessInput()
 	if (KeyState['w'] == INPUT_DOWN)
 	{
 		std::cout << "move object";
+		
 	}
 }
 
