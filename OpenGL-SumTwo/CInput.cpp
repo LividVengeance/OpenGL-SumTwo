@@ -40,10 +40,10 @@ void CInput::KeyboardUp(unsigned char key, int x, int y)
 
 void CInput::MousePassiveMove(int x, int y)
 {
-	std::cout << "Passive x: " << x << " | y: " << y << std::endl;
+	//std::cout << "Passive x: " << x << " | y: " << y << std::endl;
 }
 
 void CInput::MouseMove(int x, int y)
 {
-	std::cout << "Clicked x: " << x << " | y: " << y << std::endl;
+	//std::cout << "Clicked x: " << x << " | y: " << y << std::endl;
 }

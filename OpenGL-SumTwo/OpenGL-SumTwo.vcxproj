@@ -165,6 +165,7 @@
     <ClCompile Include="CGameManager.cpp" />
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CObject.cpp" />
+    <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CShaderLoader.cpp" />
     <ClCompile Include="CTextLabel.cpp" />
     <ClCompile Include="main.cpp" />

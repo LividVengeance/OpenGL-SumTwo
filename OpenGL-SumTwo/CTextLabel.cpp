@@ -3,7 +3,7 @@
 CTextLabel::CTextLabel(	std::string newText,
 						std::string font,
 						glm::vec2 pos,
-						glm::vec3 colour ,
+						glm::vec3 colour,
 						float scale )
 {
 	text = newText;
@@ -93,7 +93,7 @@ void CTextLabel::Render()
 	glBindVertexArray(VAO);
 
 	// Interate through the Characters
-	glm::vec2 textPos = position;
+	glm::vec2 textPos = glm::vec2(position.x - Utils::SCR_WIDTH/2, position.y - Utils::SCR_HEIGHT / 2); // Sets the origin(0,0) the bottom left corner
 	for (std::string::const_iterator character = text.begin(); character != text.end(); character++)
 	{
 		FontChar fontChar = Characters[*character];
@@ -117,16 +117,15 @@ void CTextLabel::Render()
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		textPos.x += (fontChar.Advance >> 6) * scale; // Advance cursors for the next glyph
-
-		// Unbind rendering data used and blending
-		glUseProgram(0);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindVertexArray(0);
-		glBindTexture(GL_TEXTURE_2D, 0);
-		
-		glDisable(GL_CULL_FACE);
-		glDisable(GL_BLEND);
 	}
+	// Unbind rendering data used and blending
+	glUseProgram(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glDisable(GL_CULL_FACE);
+	glDisable(GL_BLEND);
 }
 
 GLuint CTextLabel::GenerateTexture(FT_Face face)
