@@ -24,20 +24,32 @@ CGameManager::CGameManager(int argc, char** argv)
 {
 	globalPointerGM = this;
 
+	//GLfloat vertices[]{
+	//	// Position				// Color			// Texture Coords
+	//	 0.33f,  1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.33f,  1.0f,	// Top left
+	//	 0.66f,  1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.66f,  1.0f,	// Mid left
+	//	 1.0f,   0.5f,  0.0f,	1.0f, 1.0f, 1.0f,	1.0f,   0.5f,	// Bot left
+	//	 0.66f,  0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.66f,  0.0f,	// Top Right
+	//	 0.33f,  0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.33f,  0.0f,	// Mid Right
+	//	 0.0f,   0.5f,  0.0f,	1.0f, 1.0f, 1.0f,	0.0f,   0.5f,	// Bot Right
+	//};
+	//GLuint indices[] = {
+	//	4, 1, 0,	// First Triangle
+	//	4, 3, 1,	// Second Triangle
+	//	3, 2, 1,	// Third Triangle
+	//	5, 4, 0, 	// Fourth Triangle
+	//};
+
 	GLfloat vertices[]{
 		// Position				// Color			// Texture Coords
-		 0.33f,  1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.33f,  1.0f,	// Top left
-		 0.66f,  1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.66f,  1.0f,	// Mid left
-		 1.0f,   0.5f,  0.0f,	1.0f, 1.0f, 1.0f,	1.0f,   0.5f,	// Bot left
-		 0.66f,  0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.66f,  0.0f,	// Top Right
-		 0.33f,  0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.33f,  0.0f,	// Mid Right
-		 0.0f,   0.5f,  0.0f,	1.0f, 1.0f, 1.0f,	0.0f,   0.5f,	// Bot Right
+		 0.0f,   0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.0f,   0.0f,	// Top Left
+		 1.0f,   0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	1.0f,   0.0f,	// Top Right
+		 0.0f,   1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.0f,   1.0f,	// Bot Left
+		 1.0f,   1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	1.0f,   1.0f,	// Bot Right
 	};
 	GLuint indices[] = {
-		4, 1, 0,	// First Triangle
-		4, 3, 1,	// Second Triangle
-		3, 2, 1,	// Third Triangle
-		5, 4, 0, 	// Fourth Triangle
+		0, 1, 2,	// First Triangle
+		1, 3, 2,	// Second Triangle
 	};
 
 	// Setup and create at glut controlled window
@@ -66,8 +78,7 @@ CGameManager::CGameManager(int argc, char** argv)
 		"Resources/Shaders/Basic.fs");
 
 	// Setup the UI
-	label = new CTextLabel("This is some text hdfiugh kfdhg hdfgkjhd fkjgdf khdfghdk hgdfkjgh", "Resources/Fonts/arial.ttf", glm::vec2(0.0f, 0.0f));
-
+	label = new CTextLabel("Score: ", "Resources/Fonts/arial.ttf", glm::vec2(10.0f, 570.0f), glm::vec3(1.0f, 1.0f, 1.0f), 0.5f);
 
 	GameInputs = new CInput();
 
@@ -140,12 +151,27 @@ void CGameManager::Render()
 	glBindTexture(GL_TEXTURE_2D, texture);
 	glUniform1i(glGetUniformLocation(program, "tex"), 0);
 
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, texture1);
-	glUniform1i(glGetUniformLocation(program, "tex1"), 1);
-
 	glBindVertexArray(VAO);		// Bind VAO
 	
+	//		Ceate Background Image		//
+	CObject backgroundObj;
+	// Translation Matrix
+	vec3 objPosition = vec3(500.0f, 600.0f, 0.0f);
+	mat4 translationMatrix = backgroundObj.Translation(objPosition);
+	// Rotation Matrix
+	vec3 rotationAxis = vec3(0.0f, 0.0f, 1.0f);
+	float angle = 180.0f;
+	mat4 rotationMatrix = backgroundObj.Rotation(rotationAxis, angle);
+	// Scale Matrix
+	float scaleAmount = 1000.0f;
+	vec3 objScale = vec3(1.0f, 1.0f, 1.0f);
+	mat4 scaleMatrix = backgroundObj.Scale(objScale, scaleAmount);
+	// Create model matrix to combine them
+	mat4 model = backgroundObj.Combine(translationMatrix, rotationMatrix, scaleMatrix);
+
+	GLuint modelLoc = glGetUniformLocation(program, "model");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
+	glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0); // Drawing Background
 
 	//		Create Camera One		//
 	CCamera CamOne(program);
