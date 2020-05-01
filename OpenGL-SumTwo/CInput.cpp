@@ -11,11 +11,6 @@ CInput::~CInput()
 
 void CInput::ProcessInput()
 {
-	if (KeyState['w'] == INPUT_DOWN)
-	{
-		std::cout << "move object";
-		
-	}
 }
 
 void CInput::MouseClick(int button, int state, int x, int y)
@@ -46,4 +41,17 @@ void CInput::MousePassiveMove(int x, int y)
 void CInput::MouseMove(int x, int y)
 {
 	//std::cout << "Clicked x: " << x << " | y: " << y << std::endl;
+}
+
+bool CInput::getKeyState(char key)
+{
+	// Gets KeyBoard State
+	if (KeyState[key] == INPUT_DOWN)
+	{
+		return(true);
+	}
+	else
+	{
+		return(false);
+	}
 }

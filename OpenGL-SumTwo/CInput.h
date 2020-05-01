@@ -9,6 +9,8 @@
 #include "gtc/matrix_transform.hpp"
 #include "gtc/type_ptr.hpp"
 
+#include "Utilities.h"
+
 
 class CInput
 {
@@ -16,18 +18,9 @@ public:
 	CInput();
 	~CInput();
 
-	enum InputState
-	{
-		INPUT_UP,
-		INPUT_DOWN,
-		INPUT_UP_FIRST,
-		INPUT_DOWN_FIRST,
-	};
-
-	InputState KeyState[255];
-	InputState MouseState[3];
-
 	void ProcessInput();
+
+	bool getKeyState(char key);
 
 	// KeyBoard Inputs
 	void KeyboardDown(unsigned char key, int x, int y);
@@ -38,7 +31,8 @@ public:
 	void MouseClick(int button, int state, int x, int y);
 	void MouseMove(int x, int y);
 private:
-	
+	InputState KeyState[255];
+	InputState MouseState[3];
 
 };
 

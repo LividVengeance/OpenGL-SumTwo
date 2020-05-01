@@ -152,9 +152,12 @@
   <ItemGroup>
     <ClInclude Include="CAudio.h" />
     <ClInclude Include="CCamera.h" />
+    <ClInclude Include="CCoin.h" />
+    <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CGameManager.h" />
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CObject.h" />
+    <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CShaderLoader.h" />
     <ClInclude Include="CTextLabel.h" />
     <ClInclude Include="Utilities.h" />
@@ -162,6 +165,8 @@
   <ItemGroup>
     <ClCompile Include="CAudio.cpp" />
     <ClCompile Include="CCamera.cpp" />
+    <ClCompile Include="CCoin.cpp" />
+    <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CGameManager.cpp" />
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CObject.cpp" />

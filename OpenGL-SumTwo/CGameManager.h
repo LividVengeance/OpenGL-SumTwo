@@ -14,6 +14,7 @@
 #include "CCamera.h"
 #include "CInput.h"
 #include "CObject.h"
+#include "CPlayer.h"
 #include "CShaderLoader.h"
 #include "CTextLabel.h"
 #include "Utilities.h"
@@ -51,7 +52,10 @@ private:
 	FMOD::System* audioSystem;
 	
 	CInput* GameInputs;
-	CTextLabel* label;
+	CPlayer* player;
+	CObject* playerObj;
+	CTextLabel* scoreLabel;
+	CTextLabel* lifeLabel;
 
 	GLfloat currentTime;
 	GLint program;

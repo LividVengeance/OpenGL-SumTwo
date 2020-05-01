@@ -4,21 +4,6 @@
 
 CObject::CObject()
 {
-	GLfloat vertices[]{
-		// Position				// Color			// Texture Coords
-		 0.33f,  1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.33f,  1.0f,	// Top left
-		 0.66f,  1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.66f,  1.0f,	// Mid left
-		 1.0f,   0.5f,  0.0f,	1.0f, 1.0f, 1.0f,	1.0f,   0.5f,	// Bot left
-		 0.66f,  0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.66f,  0.0f,	// Top Right
-		 0.33f,  0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.33f,  0.0f,	// Mid Right
-		 0.0f,   0.5f,  0.0f,	1.0f, 1.0f, 1.0f,	0.0f,   0.5f,	// Bot Right
-	};
-	GLuint indices[] = {
-		4, 1, 0,	// First Triangle
-		4, 3, 1,	// Second Triangle
-		3, 2, 1,	// Third Triangle
-		5, 4, 0, 	// Fourth Triangle
-	};
 }
 
 CObject::~CObject()

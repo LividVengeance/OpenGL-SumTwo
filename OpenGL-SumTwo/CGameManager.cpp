@@ -24,22 +24,6 @@ CGameManager::CGameManager(int argc, char** argv)
 {
 	globalPointerGM = this;
 
-	//GLfloat vertices[]{
-	//	// Position				// Color			// Texture Coords
-	//	 0.33f,  1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.33f,  1.0f,	// Top left
-	//	 0.66f,  1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.66f,  1.0f,	// Mid left
-	//	 1.0f,   0.5f,  0.0f,	1.0f, 1.0f, 1.0f,	1.0f,   0.5f,	// Bot left
-	//	 0.66f,  0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.66f,  0.0f,	// Top Right
-	//	 0.33f,  0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.33f,  0.0f,	// Mid Right
-	//	 0.0f,   0.5f,  0.0f,	1.0f, 1.0f, 1.0f,	0.0f,   0.5f,	// Bot Right
-	//};
-	//GLuint indices[] = {
-	//	4, 1, 0,	// First Triangle
-	//	4, 3, 1,	// Second Triangle
-	//	3, 2, 1,	// Third Triangle
-	//	5, 4, 0, 	// Fourth Triangle
-	//};
-
 	GLfloat vertices[]{
 		// Position				// Color			// Texture Coords
 		 0.0f,   0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.0f,   0.0f,	// Top Left
@@ -48,6 +32,17 @@ CGameManager::CGameManager(int argc, char** argv)
 		 1.0f,   1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	1.0f,   1.0f,	// Bot Right
 	};
 	GLuint indices[] = {
+		0, 1, 2,	// First Triangle
+		1, 3, 2,	// Second Triangle
+	};
+	GLfloat playerVertices[]{
+		// Position				// Color			// Texture Coords
+		 0.0f,   0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.0f,   0.0f,	// Top Left
+		 1.0f,   0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	1.0f,   0.0f,	// Top Right
+		 0.0f,   1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.0f,   1.0f,	// Bot Left
+		 1.0f,   1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	1.0f,   1.0f,	// Bot Right
+	};
+	GLuint playerIndices[] = {
 		0, 1, 2,	// First Triangle
 		1, 3, 2,	// Second Triangle
 	};
@@ -78,9 +73,13 @@ CGameManager::CGameManager(int argc, char** argv)
 		"Resources/Shaders/Basic.fs");
 
 	// Setup the UI
-	label = new CTextLabel("Score: ", "Resources/Fonts/arial.ttf", glm::vec2(10.0f, 570.0f), glm::vec3(1.0f, 1.0f, 1.0f), 0.5f);
+	scoreLabel = new CTextLabel("Score: 0", "Resources/Fonts/arial.ttf", glm::vec2(10.0f, 570.0f), glm::vec3(0.0f, 1.0f, 0.5f), 0.5f);
+	lifeLabel = new CTextLabel("Lives: 5", "Resources/Fonts/arial.ttf", glm::vec2(10.0f, 540.0f), glm::vec3(1.0f, 0.0f, 0.0f), 0.5f);
 
+	// Setup Player
 	GameInputs = new CInput();
+	playerObj = new CObject;
+	player = new CPlayer(GameInputs, playerObj);
 
 	// Create Audio Syetem
 	CreateAudioSystem();
@@ -99,6 +98,18 @@ CGameManager::CGameManager(int argc, char** argv)
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	//		Draw player		//
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+	glGenBuffers(1, &EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(playerIndices), playerIndices, GL_STATIC_DRAW);
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(playerVertices), playerVertices, GL_STATIC_DRAW);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
@@ -173,6 +184,22 @@ void CGameManager::Render()
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
 	glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0); // Drawing Background
 
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture1);
+	glUniform1i(glGetUniformLocation(program, "tex"), 0);
+
+	//		Player		//
+	vec3 playerObjPos = vec3(500.0f, 600.0f, 0.0f);
+	mat4 playerTrans = playerObj->Translation(playerObjPos);
+	vec3 playerRotation = vec3(0.0f, 0.0f, 1.0f);
+	mat4 playerrotation = playerObj->Rotation(playerRotation, angle);
+	vec3 playerObjScale = vec3(1.0f, 1.0f, 1.0f);
+	mat4 playerScaleMat = playerObj->Scale(playerObjScale, scaleAmount);
+	mat4 playerModel = playerObj->Combine(playerTrans, playerrotation, playerScaleMat);
+	GLuint modelLoc1 = glGetUniformLocation(program, "playerModel");
+	glUniformMatrix4fv(modelLoc1, 1, GL_FALSE, value_ptr(playerModel));
+	glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0); 
+
 	//		Create Camera One		//
 	CCamera CamOne(program);
 	mat4 view = CamOne.CameraView();
@@ -183,7 +210,9 @@ void CGameManager::Render()
 	GLint currentTimeLoc = glGetUniformLocation(program, "currentTime");
 	glUniform1f(currentTimeLoc, currentTime);
 
-	label->Render();
+	// Render UI Elements
+	scoreLabel->Render();
+	lifeLabel->Render();
 
 	glBindVertexArray(0);		// Unbinding VAO
 	glUseProgram(0);
@@ -199,7 +228,14 @@ void CGameManager::Update()
 
 	audioSystem->update();
 
+	// Updates the score
+	//std::string scoreStr = "Score: ";
+	//scoreStr += std::to_string(Utils::gameScore);
+	//std::cout << scoreStr << std::endl;
+	//label->SetText(scoreStr);
+	
 	GameInputs->ProcessInput();
+	player->test();
 
 	glutPostRedisplay();
 }
@@ -236,7 +272,6 @@ GLint CGameManager::GenerateTextures()
 	glBindTexture(GL_TEXTURE_2D, 1);
 
 
-
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
@@ -247,6 +282,7 @@ GLint CGameManager::GenerateTextures()
 
 void CGameManager::KeyBoardDown(unsigned char key, int x, int y)
 {
+	//Utils::gameScore++;
 	GameInputs->KeyboardDown(key, x, y);
 }
 
