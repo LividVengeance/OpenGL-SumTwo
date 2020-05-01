@@ -55,9 +55,7 @@ CGameManager::CGameManager(int argc, char** argv)
 
 	// Setup Player
 	GameInputs = new CInput();
-	playerObj = new CObject;
-	player = new CPlayer(GameInputs, playerObj, gameCamera, program);
-	
+	player = new CPlayer(GameInputs, gameCamera, program);
 	
 	backgroundImage = new CBackground(program, gameCamera);
 																															 
@@ -94,6 +92,7 @@ void CGameManager::Render()
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(view));
 
 	backgroundImage->Render();
+	player->Render();
 
 	GLint currentTimeLoc = glGetUniformLocation(program, "currentTime");
 	glUniform1f(currentTimeLoc, currentTime);
@@ -123,16 +122,7 @@ void CGameManager::Update()
 	std::string scoreStr = "Score: ";
 	scoreStr += std::to_string(gameScore);
 	scoreLabel->SetText(scoreStr);
-	
-	//		Player		//
-	glm::mat4 playerTransMat = playerObj->Translation(player->playerPostion);
-	float angle = 0.0f;
-	glm::mat4 playerRotationMat = playerObj->Rotation(player->playerRotation, angle);
-	float scaleAmount = 100.0f;
-	glm::mat4 playerScaleMat = playerObj->Scale(player->playerScale, scaleAmount);
-	playerMatModel = playerObj->Combine(playerTransMat, playerRotationMat, playerScaleMat);
 
-	GameInputs->ProcessInput();
 	player->Update(deltaTime);
 
 	glutPostRedisplay();

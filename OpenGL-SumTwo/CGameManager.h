@@ -52,7 +52,6 @@ private:
 	
 	CInput* GameInputs;
 	CPlayer* player;
-	CObject* playerObj;
 	CObject* backgroundObj;
 	CCamera* gameCamera;
 	CBackground* backgroundImage;

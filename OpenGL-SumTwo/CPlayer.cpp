@@ -1,27 +1,27 @@
 #include "CPlayer.h"
 
-CPlayer::CPlayer(CInput* GameInputs, CObject* playerObj, CCamera* camera, GLint program)
+CPlayer::CPlayer(CInput* GameInputs, CCamera* camera, GLint program)
 {
 	PlayerInputs = GameInputs;
-	playersObject = playerObj;
 
-	GLfloat Vertices[]{
-		// Position				// Color			// Texture Coords
-		 0.0f,   0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.0f,   0.0f,	// Top Left
-		 1.0f,   0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	1.0f,   0.0f,	// Top Right
-		 0.0f,   1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.0f,   1.0f,	// Bot Left
-		 1.0f,   1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	1.0f,   1.0f,	// Bot Right
-	};
-	GLuint Indices[] = {
-		0, 1, 2,	// First Triangle
-		1, 3, 2,	// Second Triangle
-	};
+	float xSize = 50;
+	float ySize = 50;
 
+	// Translation Matrix
 	playerPostion = vec3(0, 0, 0);
+	mat4 translationMatrix = playersObject.Translation(playerPostion);
+	// Rotation Matrix
 	playerRotation = vec3(1.0f, 1.0f, 1.0f);
+	mat4 rotationMatrix = playersObject.Rotation(playerRotation, 0.0f); // 0.0f is rotaition angle
+	// Scale Matrix
+	float scaleAmount = 1.0f;
 	playerScale = vec3(1.0f, 1.0f, 1.0f);
-	const char *fileLocation = "Resources/Textures/Sprite-0002.png";
-	CMesh playerMesh(CCamera* camera, GLint program, GLfloat vertices, GLuint indices, const char* fileLocation);
+	mat4 scaleMatrix = playersObject.Scale(playerScale, scaleAmount);
+	// Create model matrix to combine them
+	model = translationMatrix * rotationMatrix * scaleMatrix;
+
+	const char *fileLocation = "Resources/Textures/Sprite-0001.png";
+	playerMesh = new CMesh(program, camera, xSize, ySize, fileLocation, model);
 }
 
 CPlayer::~CPlayer()
@@ -69,4 +69,9 @@ void CPlayer::Update(GLfloat deltaTime)
 	{
 		std::cout << "Player Shoot Meme" << std::endl;
 	}
+}
+
+void CPlayer::Render()
+{
+	playerMesh->Render();
 }

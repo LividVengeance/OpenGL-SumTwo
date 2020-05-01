@@ -22,8 +22,6 @@ CBackground::CBackground(GLint program, CCamera* camera)
 	model = translationMatrix * rotationMatrix * scaleMatrix;
 
 	const char* fileLocation = "Resources/Textures/Sprite-0002.png";
-	//CMesh backgroundMesh(GLint program, CCamera* camera, GLfloat vertices[], GLuint indices[], const char* fileLocation, glm::mat4 model);
-	
 	backgroundMesh = new CMesh(program, camera, xSize, ySize, fileLocation, model);
 }
 
