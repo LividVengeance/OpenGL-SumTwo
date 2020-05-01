@@ -11,6 +11,7 @@
 #include "gtc/type_ptr.hpp"
 
 #include "CAudio.h"
+#include "CBackground.h"
 #include "CCamera.h"
 #include "CInput.h"
 #include "CObject.h"
@@ -50,10 +51,16 @@ private:
 	GLuint texture1;
 
 	FMOD::System* audioSystem;
+
+	int gameScore = 0;
+
+	glm::mat4 playerMatModel;
 	
 	CInput* GameInputs;
 	CPlayer* player;
 	CObject* playerObj;
+	CObject* backgroundObj;
+	CBackground* backgroundImage;
 	CTextLabel* scoreLabel;
 	CTextLabel* lifeLabel;
 

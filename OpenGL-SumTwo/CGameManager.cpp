@@ -81,6 +81,9 @@ CGameManager::CGameManager(int argc, char** argv)
 	playerObj = new CObject;
 	player = new CPlayer(GameInputs, playerObj);
 
+	CObject backgroundObj;
+	backgroundImage = new CBackground(backgroundObj);
+
 	// Create Audio Syetem
 	CreateAudioSystem();
 	// Creates and plays the background music
@@ -104,12 +107,15 @@ CGameManager::CGameManager(int argc, char** argv)
 	//		Draw player		//
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
+
 	glGenBuffers(1, &EBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(playerIndices), playerIndices, GL_STATIC_DRAW);
+
 	glGenBuffers(1, &VBO);
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(playerVertices), playerVertices, GL_STATIC_DRAW);
+
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
@@ -158,54 +164,33 @@ void CGameManager::Render()
 
 	glUseProgram(program);
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glUniform1i(glGetUniformLocation(program, "tex"), 0);
-
-	glBindVertexArray(VAO);		// Bind VAO
-	
-	//		Ceate Background Image		//
-	CObject backgroundObj;
-	// Translation Matrix
-	vec3 objPosition = vec3(500.0f, 600.0f, 0.0f);
-	mat4 translationMatrix = backgroundObj.Translation(objPosition);
-	// Rotation Matrix
-	vec3 rotationAxis = vec3(0.0f, 0.0f, 1.0f);
-	float angle = 180.0f;
-	mat4 rotationMatrix = backgroundObj.Rotation(rotationAxis, angle);
-	// Scale Matrix
-	float scaleAmount = 1000.0f;
-	vec3 objScale = vec3(1.0f, 1.0f, 1.0f);
-	mat4 scaleMatrix = backgroundObj.Scale(objScale, scaleAmount);
-	// Create model matrix to combine them
-	mat4 model = backgroundObj.Combine(translationMatrix, rotationMatrix, scaleMatrix);
-
-	GLuint modelLoc = glGetUniformLocation(program, "model");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(model));
-	glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0); // Drawing Background
-
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, texture1);
-	glUniform1i(glGetUniformLocation(program, "tex"), 0);
-
-	//		Player		//
-	vec3 playerObjPos = vec3(500.0f, 600.0f, 0.0f);
-	mat4 playerTrans = playerObj->Translation(playerObjPos);
-	vec3 playerRotation = vec3(0.0f, 0.0f, 1.0f);
-	mat4 playerrotation = playerObj->Rotation(playerRotation, angle);
-	vec3 playerObjScale = vec3(1.0f, 1.0f, 1.0f);
-	mat4 playerScaleMat = playerObj->Scale(playerObjScale, scaleAmount);
-	mat4 playerModel = playerObj->Combine(playerTrans, playerrotation, playerScaleMat);
-	GLuint modelLoc1 = glGetUniformLocation(program, "playerModel");
-	glUniformMatrix4fv(modelLoc1, 1, GL_FALSE, value_ptr(playerModel));
-	glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0); 
-
 	//		Create Camera One		//
 	CCamera CamOne(program);
 	mat4 view = CamOne.CameraView();
 
 	GLuint viewLoc = glGetUniformLocation(program, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(view));
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texture);
+	glUniform1i(glGetUniformLocation(program, "tex"), 0);
+
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, texture1);
+	glUniform1i(glGetUniformLocation(program, "tex"), 0);
+
+	glBindVertexArray(VAO);		// Bind VAO
+	
+	glm::mat4 backgroundModel = backgroundImage->GetModelMatrix();
+	
+	GLuint modelLoc = glGetUniformLocation(program, "model");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(backgroundModel));
+	glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0); // Drawing Background
+	
+	//		Player		//
+	GLuint modelLoc1 = glGetUniformLocation(program, "model");
+	glUniformMatrix4fv(modelLoc1, 1, GL_FALSE, value_ptr(playerMatModel));
+	glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0); 
 
 	GLint currentTimeLoc = glGetUniformLocation(program, "currentTime");
 	glUniform1f(currentTimeLoc, currentTime);
@@ -226,16 +211,28 @@ void CGameManager::Update()
 	currentTime = glutGet(GLUT_ELAPSED_TIME);	// Get current time
 	currentTime = currentTime * 0.001f;			// Converting to time seconds (From miliseconds)
 
+	// Update Audio System
 	audioSystem->update();
 
 	// Updates the score
-	//std::string scoreStr = "Score: ";
-	//scoreStr += std::to_string(Utils::gameScore);
-	//std::cout << scoreStr << std::endl;
-	//label->SetText(scoreStr);
+	std::string scoreStr = "Score: ";
+	scoreStr += std::to_string(gameScore);
+	std::cout << scoreStr << std::endl;
+	scoreLabel->SetText(scoreStr);
 	
+	//		Player		//
+	glm::mat4 playerTransMat = playerObj->Translation(player->playerPostion);
+	vec3 playerRotation = vec3(0.0f, 0.0f, 1.0f);
+	float angle = 1800.0f;
+	glm::mat4 playerRotationMat = playerObj->Rotation(playerRotation, angle);
+	vec3 playerObjScale = vec3(1.0f, 1.0f, 1.0f);
+	float scaleAmount = 1000.0f;
+	glm::mat4 playerScaleMat = playerObj->Scale(playerObjScale, scaleAmount);
+	playerMatModel = playerObj->Combine(playerTransMat, playerRotationMat, playerScaleMat);
+
+
 	GameInputs->ProcessInput();
-	player->test();
+	player->InputsFunc();
 
 	glutPostRedisplay();
 }
@@ -282,7 +279,7 @@ GLint CGameManager::GenerateTextures()
 
 void CGameManager::KeyBoardDown(unsigned char key, int x, int y)
 {
-	//Utils::gameScore++;
+	gameScore++;
 	GameInputs->KeyboardDown(key, x, y);
 }
 

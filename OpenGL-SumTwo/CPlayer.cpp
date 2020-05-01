@@ -4,13 +4,14 @@ CPlayer::CPlayer(CInput* GameInputs, CObject* playerObj)
 {
 	PlayerInputs = GameInputs;
 	playersObject = playerObj;
+	playerPostion = vec3(0, 0, 0);
 }
 
 CPlayer::~CPlayer()
 {
 }
 
-void CPlayer::test()
+void CPlayer::InputsFunc()
 {
 	// Move Right
 	if (PlayerInputs->getKeyState('D') == true || PlayerInputs->getKeyState('d') == true)
@@ -28,3 +29,14 @@ void CPlayer::test()
 		std::cout << "Player Jump" << std::endl;
 	}
 }
+
+void CPlayer::Update()
+{
+
+}
+
+void CPlayer::Render()
+{
+
+}
+

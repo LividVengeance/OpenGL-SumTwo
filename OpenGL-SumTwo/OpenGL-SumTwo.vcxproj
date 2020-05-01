@@ -151,6 +151,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CAudio.h" />
+    <ClInclude Include="CBackground.h" />
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCoin.h" />
     <ClInclude Include="CEnemy.h" />
@@ -164,6 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAudio.cpp" />
+    <ClCompile Include="CBackground.cpp" />
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCoin.cpp" />
     <ClCompile Include="CEnemy.cpp" />

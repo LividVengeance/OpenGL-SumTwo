@@ -48,6 +48,9 @@
     <ClInclude Include="CEnemy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CBackground.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CCamera.cpp">
@@ -81,6 +84,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CEnemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CBackground.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
