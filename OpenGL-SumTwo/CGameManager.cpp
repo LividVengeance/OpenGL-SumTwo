@@ -130,6 +130,7 @@ void CGameManager::Update()
 	scoreLabel->SetText(scoreStr);
 
 	player->Update(deltaTime);
+	//enemy->Update(deltaTime);
 
 	glutPostRedisplay();
 }

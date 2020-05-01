@@ -1,6 +1,6 @@
 #include "CMesh.h"
 
-CMesh::CMesh(GLint program, CCamera* camera, GLfloat xSize, GLuint ySize, const char *textureLocation, glm::mat4 model)
+CMesh::CMesh(GLint program, CCamera* camera, float xSize, float ySize, const char *textureLocation, glm::mat4 model)
 {
 	programMesh = program;
 	modelMatrix = model;

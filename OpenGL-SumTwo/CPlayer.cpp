@@ -33,22 +33,22 @@ void CPlayer::Update(GLfloat deltaTime)
 	// Move Right
 	if (PlayerInputs->getKeyState('D') == true || PlayerInputs->getKeyState('d') == true)
 	{
-		playerPostion.x += 200 * deltaTime;
+		playerPostion.x += 200.0f * deltaTime;
 	}
 	// Move Left
 	if (PlayerInputs->getKeyState('A') == true || PlayerInputs->getKeyState('a') == true)
 	{
-		playerPostion.x -= 200 * deltaTime;
+		playerPostion.x -= 200.0f * deltaTime;
 	}
 	// Move Up
 	if (PlayerInputs->getKeyState('W') == true || PlayerInputs->getKeyState('w') == true)
 	{
-		playerPostion.y += 200 * deltaTime;
+		playerPostion.y += 200.0f * deltaTime;
 	}
 	// Move Up
 	if (PlayerInputs->getKeyState('S') == true || PlayerInputs->getKeyState('s') == true)
 	{
-		playerPostion.y -= 200 * deltaTime;
+		playerPostion.y -= 200.0f * deltaTime;
 	}
 	// Shoot
 	if (PlayerInputs->getKeyState(' ') == true)

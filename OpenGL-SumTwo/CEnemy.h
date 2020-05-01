@@ -1,4 +1,10 @@
 #pragma once
+
+#include <stdio.h>      
+#include <stdlib.h>     
+#include <time.h>       
+
+
 #include "CMesh.h"
 #include "CObject.h"
 
@@ -11,9 +17,10 @@ public:
 	CMesh* enemyMesh;
 	glm::mat4 model;
 	CObject enemysObject;
-
+	vec3 enemyPosition;
+	float timeDelta;
 	CMesh* playerMesh;
-
+	void Update(float deltaTime);
 	void Render();
 
 private:

@@ -13,7 +13,7 @@
 class CMesh
 {
 public:
-	CMesh(GLint program, CCamera* camera, GLfloat xSize, GLuint ySize, const char *textureLocation, glm::mat4 model);
+	CMesh(GLint program, CCamera* camera, float xSize, float ySize, const char *textureLocation, glm::mat4 model);
 	~CMesh();
 	void Render();
 

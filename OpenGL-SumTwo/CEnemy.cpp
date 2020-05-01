@@ -2,12 +2,16 @@
 
 CEnemy::CEnemy(CCamera* camera, GLint program)
 {
+	srand(time(NULL));
+
 	CObject enemyObj;
 	float xSize = 75;
 	float ySize = 50;
 
+	int randomX = rand() % Utils::SCR_WIDTH;
 	// Translation Matrix
-	vec3 enemyPosition = vec3(0, 0, 0);
+	enemyPosition = vec3(randomX, 0, 0);
+
 	mat4 translationMatrix = enemyObj.Translation(enemyPosition);
 	// Rotation Matrix
 	vec3 enemyRotation = vec3(1.0f, 1.0f, 1.0f);
@@ -30,4 +34,9 @@ CEnemy::~CEnemy()
 void CEnemy::Render()
 {
 	enemyMesh->Render();
+}
+ 
+void CEnemy::Update(float deltaTime)
+{
+	enemyPosition.y -= 10  * deltaTime;
 }
