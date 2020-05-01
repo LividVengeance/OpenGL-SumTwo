@@ -13,7 +13,9 @@
 #include "CAudio.h"
 #include "CBackground.h"
 #include "CCamera.h"
+
 #include "CInput.h"
+#include "CMesh.h"
 #include "CObject.h"
 #include "CPlayer.h"
 #include "CShaderLoader.h"
@@ -40,30 +42,23 @@ public:
 	void Update();
 	void Render();
 	void ManagerMain();
-	GLint GenerateTextures();
 
 private:
-	GLuint VBO;
-	GLuint EBO;
-	GLuint VAO;
-
-	GLuint texture;
-	GLuint texture1;
+	GLuint VBO, EBO, VAO;
 
 	FMOD::System* audioSystem;
-
 	int gameScore = 0;
-
 	glm::mat4 playerMatModel;
 	
 	CInput* GameInputs;
 	CPlayer* player;
 	CObject* playerObj;
 	CObject* backgroundObj;
+	CCamera* gameCamera;
 	CBackground* backgroundImage;
 	CTextLabel* scoreLabel;
 	CTextLabel* lifeLabel;
 
-	GLfloat currentTime;
+	GLfloat currentTime, previousTime, deltaTime;
 	GLint program;
 };

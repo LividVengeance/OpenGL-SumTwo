@@ -8,6 +8,7 @@
 #include "glm.hpp"
 #include "gtc/matrix_transform.hpp"
 #include "gtc/type_ptr.hpp"
+#include "Utilities.h"
 
 
 using namespace glm;
@@ -23,8 +24,8 @@ public:
 private:
 
 	// Screen/Viewport size
-	const unsigned int SCR_WIDTH = 800;
-	const unsigned int SCR_HEIGHT = 800;
+	const unsigned int SCR_WIDTH = Utils::SCR_WIDTH;
+	const unsigned int SCR_HEIGHT = Utils::SCR_HEIGHT;
 
 	// Camera Variables
 	vec3 camPos = vec3(0.0f, 0.0f, 3.0f);

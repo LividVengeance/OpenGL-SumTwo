@@ -24,35 +24,12 @@ CGameManager::CGameManager(int argc, char** argv)
 {
 	globalPointerGM = this;
 
-	GLfloat vertices[]{
-		// Position				// Color			// Texture Coords
-		 0.0f,   0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.0f,   0.0f,	// Top Left
-		 1.0f,   0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	1.0f,   0.0f,	// Top Right
-		 0.0f,   1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.0f,   1.0f,	// Bot Left
-		 1.0f,   1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	1.0f,   1.0f,	// Bot Right
-	};
-	GLuint indices[] = {
-		0, 1, 2,	// First Triangle
-		1, 3, 2,	// Second Triangle
-	};
-	GLfloat playerVertices[]{
-		// Position				// Color			// Texture Coords
-		 0.0f,   0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.0f,   0.0f,	// Top Left
-		 1.0f,   0.0f,  0.0f,	1.0f, 1.0f, 1.0f,	1.0f,   0.0f,	// Top Right
-		 0.0f,   1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	0.0f,   1.0f,	// Bot Left
-		 1.0f,   1.0f,  0.0f,	1.0f, 1.0f, 1.0f,	1.0f,   1.0f,	// Bot Right
-	};
-	GLuint playerIndices[] = {
-		0, 1, 2,	// First Triangle
-		1, 3, 2,	// Second Triangle
-	};
-
 	// Setup and create at glut controlled window
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
 	glutInitWindowPosition(50, 50);
 	glutInitWindowSize(Utils::SCR_WIDTH, Utils::SCR_HEIGHT);
-	glutCreateWindow("OpenGL Window Title");
+	glutCreateWindow("OpenGL Summative Two - GD1P04");
 
 	// Sets up all GL function callbacks based on pc hardware
 	if (glewInit() != GLEW_OK)
@@ -79,72 +56,18 @@ CGameManager::CGameManager(int argc, char** argv)
 	// Setup Player
 	GameInputs = new CInput();
 	playerObj = new CObject;
-	player = new CPlayer(GameInputs, playerObj);
-
-	CObject backgroundObj;
-	backgroundImage = new CBackground(backgroundObj);
-
-	// Create Audio Syetem
+	player = new CPlayer(GameInputs, playerObj, gameCamera, program);
+	
+	
+	backgroundImage = new CBackground(program, gameCamera);
+																															 
+	// Create Audio Syetem																									  
 	CreateAudioSystem();
 	// Creates and plays the background music
 	CAudio backingTrack("Resources/Audio/Background.mp3", audioSystem, true);
 	backingTrack.PlaySound();
 
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	//		Draw player		//
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-
-	glGenBuffers(1, &EBO);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(playerIndices), playerIndices, GL_STATIC_DRAW);
-
-	glGenBuffers(1, &VBO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(playerVertices), playerVertices, GL_STATIC_DRAW);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glVertexAttribPointer(
-		0,
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		8 * sizeof(GLfloat),	// Stride of the single vertex (pos + color)
-		(GLvoid*)0);			// Offset from beginning of Vertex
-	glEnableVertexAttribArray(0);
-
-	glVertexAttribPointer(
-		1,
-		3,
-		GL_FLOAT,
-		GL_FALSE,
-		8 * sizeof(GLfloat),				// Stride of the single vertex (pos + color)
-		(GLvoid*)(3 * sizeof(GLfloat)));	// Offset from beginning of Vertex
-	glEnableVertexAttribArray(1);
-
-	glVertexAttribPointer(
-		2,
-		2,
-		GL_FLOAT,
-		GL_FALSE,
-		8 * sizeof(GLfloat),
-		(GLvoid*)(6 * sizeof(GLfloat)));
-	glEnableVertexAttribArray(2);
+	
 
 	glm::vec3 objPostion = glm::vec3(0.5f, 0.5f, 0.0f);
 	glm::mat4 translationMatrix = glm::translate(glm::mat4(), objPostion);
@@ -161,7 +84,6 @@ void CGameManager::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-
 	glUseProgram(program);
 
 	//		Create Camera One		//
@@ -171,26 +93,7 @@ void CGameManager::Render()
 	GLuint viewLoc = glGetUniformLocation(program, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(view));
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glUniform1i(glGetUniformLocation(program, "tex"), 0);
-
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, texture1);
-	glUniform1i(glGetUniformLocation(program, "tex"), 0);
-
-	glBindVertexArray(VAO);		// Bind VAO
-	
-	glm::mat4 backgroundModel = backgroundImage->GetModelMatrix();
-	
-	GLuint modelLoc = glGetUniformLocation(program, "model");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(backgroundModel));
-	glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0); // Drawing Background
-	
-	//		Player		//
-	GLuint modelLoc1 = glGetUniformLocation(program, "model");
-	glUniformMatrix4fv(modelLoc1, 1, GL_FALSE, value_ptr(playerMatModel));
-	glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0); 
+	backgroundImage->Render();
 
 	GLint currentTimeLoc = glGetUniformLocation(program, "currentTime");
 	glUniform1f(currentTimeLoc, currentTime);
@@ -210,71 +113,29 @@ void CGameManager::Update()
 	// Update information
 	currentTime = glutGet(GLUT_ELAPSED_TIME);	// Get current time
 	currentTime = currentTime * 0.001f;			// Converting to time seconds (From miliseconds)
+	deltaTime = currentTime - previousTime;	
+	previousTime = currentTime;
 
 	// Update Audio System
 	audioSystem->update();
 
-	// Updates the score
+	// Updates the score label
 	std::string scoreStr = "Score: ";
 	scoreStr += std::to_string(gameScore);
-	std::cout << scoreStr << std::endl;
 	scoreLabel->SetText(scoreStr);
 	
 	//		Player		//
 	glm::mat4 playerTransMat = playerObj->Translation(player->playerPostion);
-	vec3 playerRotation = vec3(0.0f, 0.0f, 1.0f);
-	float angle = 1800.0f;
-	glm::mat4 playerRotationMat = playerObj->Rotation(playerRotation, angle);
-	vec3 playerObjScale = vec3(1.0f, 1.0f, 1.0f);
-	float scaleAmount = 1000.0f;
-	glm::mat4 playerScaleMat = playerObj->Scale(playerObjScale, scaleAmount);
+	float angle = 0.0f;
+	glm::mat4 playerRotationMat = playerObj->Rotation(player->playerRotation, angle);
+	float scaleAmount = 100.0f;
+	glm::mat4 playerScaleMat = playerObj->Scale(player->playerScale, scaleAmount);
 	playerMatModel = playerObj->Combine(playerTransMat, playerRotationMat, playerScaleMat);
 
-
 	GameInputs->ProcessInput();
-	player->InputsFunc();
+	player->Update(deltaTime);
 
 	glutPostRedisplay();
-}
-
-GLint CGameManager::GenerateTextures()
-{
-	// Texture One
-	glGenTextures(1, &texture);
-	glBindTexture(GL_TEXTURE_2D, texture);
-
-	int width, height;
-	unsigned char* image1 = SOIL_load_image("Resources/Textures/frogChair.jpg", &width, &height, 0, SOIL_LOAD_RGBA);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image1);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-	SOIL_free_image_data(image1);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	// Texture Two
-	glGenTextures(1, &texture1);
-	glBindTexture(GL_TEXTURE_2D, texture1);
-
-	unsigned char* image = SOIL_load_image("Resources/Textures/catz.jpg", &width, &height, 0, SOIL_LOAD_RGBA);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-	glGenerateMipmap(GL_TEXTURE_2D);
-	SOIL_free_image_data(image);
-	glBindTexture(GL_TEXTURE_2D, 1);
-
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	return (0);
 }
 
 void CGameManager::KeyBoardDown(unsigned char key, int x, int y)
@@ -358,6 +219,5 @@ void CGameManager::ManagerMain()
 	glutMotionFunc(MouseMoveRedirect);
 	glutPassiveMotionFunc(MousePassiveMoveRedirect);
 
-	GenerateTextures();
 	glutMainLoop();
 }
