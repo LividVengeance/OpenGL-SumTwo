@@ -128,8 +128,9 @@ void CGameManager::Update()
 	std::string scoreStr = "Score: ";
 	scoreStr += std::to_string(gameScore);
 	scoreLabel->SetText(scoreStr);
-
-	player->Update(deltaTime);
+	
+	player->moveInput(deltaTime);
+	player->Update();
 	//enemy->Update(deltaTime);
 
 	glutPostRedisplay();
