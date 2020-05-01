@@ -53,11 +53,15 @@ CGameManager::CGameManager(int argc, char** argv)
 	scoreLabel = new CTextLabel("Score: 0", "Resources/Fonts/arial.ttf", glm::vec2(10.0f, 570.0f), glm::vec3(0.0f, 1.0f, 0.5f), 0.5f);
 	lifeLabel = new CTextLabel("Lives: 5", "Resources/Fonts/arial.ttf", glm::vec2(10.0f, 540.0f), glm::vec3(1.0f, 0.0f, 0.0f), 0.5f);
 
+	enemy = new CEnemy(gameCamera, program);
+
 	// Setup Player
 	GameInputs = new CInput();
 	player = new CPlayer(GameInputs, gameCamera, program);
 	
 	backgroundImage = new CBackground(program, gameCamera);
+
+	
 																															 
 	// Create Audio Syetem																									  
 	CreateAudioSystem();
@@ -92,7 +96,9 @@ void CGameManager::Render()
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(view));
 
 	backgroundImage->Render();
+	enemy->Render();
 	player->Render();
+	
 
 	GLint currentTimeLoc = glGetUniformLocation(program, "currentTime");
 	glUniform1f(currentTimeLoc, currentTime);

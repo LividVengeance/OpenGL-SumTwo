@@ -20,7 +20,7 @@ CPlayer::CPlayer(CInput* GameInputs, CCamera* camera, GLint program)
 	// Create model matrix to combine them
 	model = translationMatrix * rotationMatrix * scaleMatrix;
 
-	const char *fileLocation = "Resources/Textures/Sprite-0001.png";
+	const char* fileLocation = "Resources/Textures/Sprite-0001.png";
 	playerMesh = new CMesh(program, camera, xSize, ySize, fileLocation, model);
 }
 
@@ -33,36 +33,22 @@ void CPlayer::Update(GLfloat deltaTime)
 	// Move Right
 	if (PlayerInputs->getKeyState('D') == true || PlayerInputs->getKeyState('d') == true)
 	{
-		if (!(playerPostion.x > (Utils::SCR_WIDTH / 4)))
-		{
-			playerPostion.x += 200 * deltaTime;
-		}
+		playerPostion.x += 200 * deltaTime;
 	}
 	// Move Left
 	if (PlayerInputs->getKeyState('A') == true || PlayerInputs->getKeyState('a') == true)
 	{
-		float scrWidth = Utils::SCR_WIDTH;
-		if (playerPostion.x > -(scrWidth / 3))
-		{
-			playerPostion.x -= 200 * deltaTime;
-		}
+		playerPostion.x -= 200 * deltaTime;
 	}
 	// Move Up
 	if (PlayerInputs->getKeyState('W') == true || PlayerInputs->getKeyState('w') == true)
 	{
-		if (!(playerPostion.y > (Utils::SCR_HEIGHT / 2)))
-		{
-			playerPostion.y += 200 * deltaTime;
-		}
+		playerPostion.y += 200 * deltaTime;
 	}
 	// Move Up
 	if (PlayerInputs->getKeyState('S') == true || PlayerInputs->getKeyState('s') == true)
 	{
-		float scrHeight = Utils::SCR_HEIGHT;
-		if (playerPostion.y > -(scrHeight / 1.5))
-		{
-			playerPostion.y -= 200 * deltaTime;
-		}
+		playerPostion.y -= 200 * deltaTime;
 	}
 	// Shoot
 	if (PlayerInputs->getKeyState(' ') == true)

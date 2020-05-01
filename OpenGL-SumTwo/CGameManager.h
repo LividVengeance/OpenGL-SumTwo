@@ -13,7 +13,7 @@
 #include "CAudio.h"
 #include "CBackground.h"
 #include "CCamera.h"
-
+#include "CEnemy.h"
 #include "CInput.h"
 #include "CMesh.h"
 #include "CObject.h"
@@ -54,6 +54,7 @@ private:
 	CPlayer* player;
 	CObject* backgroundObj;
 	CCamera* gameCamera;
+	CEnemy* enemy;
 	CBackground* backgroundImage;
 	CTextLabel* scoreLabel;
 	CTextLabel* lifeLabel;
