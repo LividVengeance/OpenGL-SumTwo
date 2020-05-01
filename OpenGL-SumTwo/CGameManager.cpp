@@ -131,7 +131,8 @@ void CGameManager::Update()
 	
 	player->moveInput(deltaTime);
 	player->Update();
-	//enemy->Update(deltaTime);
+
+	enemy->Update(deltaTime);
 
 	glutPostRedisplay();
 }
