@@ -1,9 +1,9 @@
 #include "CMesh.h"
 
-CMesh::CMesh(GLint program, CCamera* camera, float xSize, float ySize, const char *textureLocation, glm::mat4 model)
+CMesh::CMesh(GLint program, CCamera* camera, float xSize, float ySize, const char *textureLocation, CObject object)
 {
 	programMesh = program;
-	modelMatrix = model;
+	meshObject = object;
 
 	GLfloat vertices[] {
 		// Position							// Color						// Texture Coords
@@ -79,6 +79,15 @@ CMesh::CMesh(GLint program, CCamera* camera, float xSize, float ySize, const cha
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+
+
+	objPosition = vec3(0.0f, 0.0f, 1.0f);
+	rotationAxis = vec3(0.0f, 0.0f, 1.0f);
+	objScale = vec3(1.0f, 1.0f, 1.0f);
+	scaleAmount = 1.0f;
+
+	Update();
 }
 
 CMesh::~CMesh()
@@ -99,4 +108,14 @@ void CMesh::Render()
 	GLuint modelLoc = glGetUniformLocation(programMesh, "model");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(modelMatrix));
 	glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, 0); // Drawing Background
+}
+
+void CMesh::Update()
+{
+	mat4 translationMatrix = meshObject.Translation(objPosition);
+	mat4 rotationMatrix = meshObject.Rotation(rotationAxis, 0.0f); // 0.0f is rotaition angle	
+	mat4 scaleMatrix = meshObject.Scale(objScale, scaleAmount);
+
+	// Create model matrix to combine them
+	modelMatrix = translationMatrix * rotationMatrix * scaleMatrix;
 }
