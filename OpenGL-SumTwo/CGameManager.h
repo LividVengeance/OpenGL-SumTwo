@@ -14,6 +14,7 @@
 #include "CBackground.h"
 #include "CCamera.h"
 #include "CEnemy.h"
+#include "CEnemyManager.h"
 #include "CInput.h"
 #include "CMesh.h"
 #include "CPlayer.h"
@@ -52,7 +53,7 @@ private:
 	CInput* GameInputs;
 	CPlayer* player;
 	CCamera* gameCamera;
-	CEnemy* enemy;
+	CEnemyManager* enemyManager;
 	CBackground* backgroundImage;
 
 	CTextLabel* scoreLabel;

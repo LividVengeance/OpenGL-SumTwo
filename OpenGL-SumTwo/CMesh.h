@@ -16,6 +16,7 @@ public:
 	CMesh(GLint program, CCamera* camera, float xSize, float ySize, const char *textureLocation);
 	~CMesh();
 	void Render();
+	void Render(glm::mat4 _modelMatrix);
 	void Update();
 
 	vec3 objPosition;

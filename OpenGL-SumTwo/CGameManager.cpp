@@ -55,7 +55,7 @@ CGameManager::CGameManager(int argc, char** argv)
 	lifeLabel = new CTextLabel("Lives: 5", "Resources/Fonts/arial.ttf", glm::vec2(10.0f, 540.0f), glm::vec3(1.0f, 0.0f, 0.0f), 0.5f);
 
 	// Setup Enemy
-	enemy = new CEnemy(gameCamera, program);
+	enemyManager = new CEnemyManager(gameCamera, program);
 
 	// Setup Player
 	GameInputs = new CInput();
@@ -89,7 +89,7 @@ void CGameManager::Render()
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(view));
 
 	backgroundImage->Render();
-	enemy->Render();
+	enemyManager->Render();
 	player->Render();
 
 	GLint currentTimeLoc = glGetUniformLocation(program, "currentTime");
@@ -124,13 +124,14 @@ void CGameManager::Update()
 	player->moveInput(deltaTime);
 	player->Update();
 
-	enemy->Update(deltaTime);
+	enemyManager->Update(deltaTime);
 
 	glutPostRedisplay();
 }
 
 void CGameManager::KeyBoardDown(unsigned char key, int x, int y)
 {
+	enemyManager->NewEnemy();
 	gameScore++;
 	GameInputs->KeyboardDown(key, x, y);
 }

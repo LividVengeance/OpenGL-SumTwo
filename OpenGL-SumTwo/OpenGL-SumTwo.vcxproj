@@ -155,6 +155,7 @@
     <ClInclude Include="CCamera.h" />
     <ClInclude Include="CCoin.h" />
     <ClInclude Include="CEnemy.h" />
+    <ClInclude Include="CEnemyManager.h" />
     <ClInclude Include="CGameManager.h" />
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CMesh.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="CCamera.cpp" />
     <ClCompile Include="CCoin.cpp" />
     <ClCompile Include="CEnemy.cpp" />
+    <ClCompile Include="CEnemyManager.cpp" />
     <ClCompile Include="CGameManager.cpp" />
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CMesh.cpp" />
