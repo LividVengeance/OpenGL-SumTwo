@@ -7,10 +7,8 @@ CPlayer::CPlayer(CInput* GameInputs, CCamera* camera, GLint program)
 	float xSize = 50;
 	float ySize = 50;
 
-	CObject player;
-
 	const char* fileLocation = "Resources/Textures/Sprite-0001.png";
-	playerMesh = new CMesh(program, camera, xSize, ySize, fileLocation, player);
+	playerMesh = new CMesh(program, camera, xSize, ySize, fileLocation);
 }
 
 CPlayer::~CPlayer()

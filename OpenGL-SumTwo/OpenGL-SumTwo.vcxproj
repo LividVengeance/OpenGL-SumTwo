@@ -158,7 +158,6 @@
     <ClInclude Include="CGameManager.h" />
     <ClInclude Include="CInput.h" />
     <ClInclude Include="CMesh.h" />
-    <ClInclude Include="CObject.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CShaderLoader.h" />
     <ClInclude Include="CTextLabel.h" />
@@ -173,7 +172,6 @@
     <ClCompile Include="CGameManager.cpp" />
     <ClCompile Include="CInput.cpp" />
     <ClCompile Include="CMesh.cpp" />
-    <ClCompile Include="CObject.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CShaderLoader.cpp" />
     <ClCompile Include="CTextLabel.cpp" />

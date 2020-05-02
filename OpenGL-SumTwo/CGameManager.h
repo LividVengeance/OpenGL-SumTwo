@@ -16,7 +16,6 @@
 #include "CEnemy.h"
 #include "CInput.h"
 #include "CMesh.h"
-#include "CObject.h"
 #include "CPlayer.h"
 #include "CShaderLoader.h"
 #include "CTextLabel.h"
@@ -44,18 +43,18 @@ public:
 	void ManagerMain();
 
 private:
-	GLuint VBO, EBO, VAO;
-
-	FMOD::System* audioSystem;
 	int gameScore = 0;
+
+	GLuint VBO, EBO, VAO;
+	FMOD::System* audioSystem;
 	glm::mat4 playerMatModel;
 	
 	CInput* GameInputs;
 	CPlayer* player;
-	CObject* backgroundObj;
 	CCamera* gameCamera;
 	CEnemy* enemy;
 	CBackground* backgroundImage;
+
 	CTextLabel* scoreLabel;
 	CTextLabel* lifeLabel;
 

@@ -24,9 +24,6 @@
     <ClInclude Include="CInput.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CShaderLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -63,9 +60,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CInput.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">

@@ -1,6 +1,5 @@
 #include "CInput.h"
 #include "CMesh.h"
-#include "CObject.h"
 
 class CPlayer
 {
@@ -19,7 +18,6 @@ public:
 
 	CMesh* playerMesh;
 	glm::mat4 model;
-	CObject playersObject;
 private:
 	CInput* PlayerInputs;
 	

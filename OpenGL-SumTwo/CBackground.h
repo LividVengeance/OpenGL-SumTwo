@@ -1,6 +1,4 @@
 #pragma once
-
-#include "CObject.h"
 #include "CMesh.h"
 
 class CBackground
@@ -13,7 +11,6 @@ public:
 	void Render();
 	glm::mat4 model;
 
-	CObject* backgroundObj;
 	CMesh* backgroundMesh;
 
 private:

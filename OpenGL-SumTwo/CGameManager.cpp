@@ -42,6 +42,7 @@ CGameManager::CGameManager(int argc, char** argv)
 	// Sets the clear colour
 	glClearColor(1.0, 0.0, 0.0, 1.0); // Sets to Red
 
+	// Enabling Culling
 	glCullFace(GL_BACK);
 	glFrontFace(GL_CCW);
 	glEnable(GL_CULL_FACE);
@@ -53,29 +54,22 @@ CGameManager::CGameManager(int argc, char** argv)
 	scoreLabel = new CTextLabel("Score: 0", "Resources/Fonts/arial.ttf", glm::vec2(10.0f, 570.0f), glm::vec3(0.0f, 1.0f, 0.5f), 0.5f);
 	lifeLabel = new CTextLabel("Lives: 5", "Resources/Fonts/arial.ttf", glm::vec2(10.0f, 540.0f), glm::vec3(1.0f, 0.0f, 0.0f), 0.5f);
 
+	// Setup Enemy
 	enemy = new CEnemy(gameCamera, program);
 
 	// Setup Player
 	GameInputs = new CInput();
 	player = new CPlayer(GameInputs, gameCamera, program);
 	
+	// Setup Background
 	backgroundImage = new CBackground(program, gameCamera);
-
-	
-																															 
+																													 
 	// Create Audio Syetem																									  
 	CreateAudioSystem();
 	// Creates and plays the background music
 	CAudio backingTrack("Resources/Audio/Background.mp3", audioSystem, true);
 	backingTrack.PlaySound();
 
-	
-
-	glm::vec3 objPostion = glm::vec3(0.5f, 0.5f, 0.0f);
-	glm::mat4 translationMatrix = glm::translate(glm::mat4(), objPostion);
-
-	GLuint translateLoc = glGetUniformLocation(program, "translation");
-	glUniformMatrix4fv(translateLoc, 1, GL_FALSE, glm::value_ptr(translationMatrix));
 }
 
 CGameManager::~CGameManager()
@@ -85,10 +79,9 @@ CGameManager::~CGameManager()
 void CGameManager::Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-
 	glUseProgram(program);
 
-	//		Create Camera One		//
+	// Create Camera One
 	CCamera CamOne(program);
 	mat4 view = CamOne.CameraView();
 
@@ -98,7 +91,6 @@ void CGameManager::Render()
 	backgroundImage->Render();
 	enemy->Render();
 	player->Render();
-	
 
 	GLint currentTimeLoc = glGetUniformLocation(program, "currentTime");
 	glUniform1f(currentTimeLoc, currentTime);
