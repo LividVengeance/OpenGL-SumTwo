@@ -5,11 +5,6 @@ CEnemy::CEnemy(CCamera* camera, GLint program, CMesh* Mesh)
 	enemyCamera = camera;
 	enemyProgram = program;
 	enemyMesh = Mesh;
-
-	int randomX = rand() % Utils::SCR_WIDTH - 400;
-
-	enemyMesh->objPosition.x = randomX;
-	enemyMesh->objPosition.y = 400;
 }
 
 CEnemy::~CEnemy()

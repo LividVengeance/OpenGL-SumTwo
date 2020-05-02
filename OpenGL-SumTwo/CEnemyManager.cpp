@@ -39,7 +39,9 @@ void CEnemyManager::Update(float deltaTime)
 void CEnemyManager::NewEnemy()
 {
 	CEnemy* newEnemy = new CEnemy(enemyCamera, enemyProgram, enemyMesh);
-	newEnemy->objPosition = vec3(0.0f, 0.f, 1.0f);
+	int randomX = rand() % Utils::SCR_WIDTH - 400;
+	newEnemy->objPosition = vec3(randomX, 400.f, 1.0f);
+
 	newEnemy->Update(0.0f);
 	allEnemies.push_back(newEnemy);
 }

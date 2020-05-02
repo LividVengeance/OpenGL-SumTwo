@@ -49,6 +49,8 @@ private:
 	GLuint VBO, EBO, VAO;
 	FMOD::System* audioSystem;
 	glm::mat4 playerMatModel;
+
+	float timer = 0;
 	
 	CInput* GameInputs;
 	CPlayer* player;

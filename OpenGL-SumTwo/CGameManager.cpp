@@ -116,6 +116,16 @@ void CGameManager::Update()
 	// Update Audio System
 	audioSystem->update();
 
+	timer += deltaTime;
+	std::cout << timer << std::endl;
+	// Adds another enemy for every 0.4 seconds
+	if (timer > 0.4f)
+	{
+		gameScore += 10;
+		timer = 0.0f;
+		enemyManager->NewEnemy();
+	}
+
 	// Updates the score label
 	std::string scoreStr = "Score: ";
 	scoreStr += std::to_string(gameScore);
@@ -131,8 +141,6 @@ void CGameManager::Update()
 
 void CGameManager::KeyBoardDown(unsigned char key, int x, int y)
 {
-	enemyManager->NewEnemy();
-	gameScore++;
 	GameInputs->KeyboardDown(key, x, y);
 }
 
