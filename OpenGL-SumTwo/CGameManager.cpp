@@ -70,7 +70,6 @@ CGameManager::CGameManager(int argc, char** argv)
 	// Creates and plays the background music
 	CAudio backingTrack("Resources/Audio/Background.mp3", audioSystem, true);
 	backingTrack.PlaySound();
-
 }
 
 CGameManager::~CGameManager()
@@ -155,7 +154,7 @@ void CGameManager::Update()
 		player->moveInput(deltaTime);
 		player->Update(&playersDead);
 
-		enemyManager->Update(deltaTime, player, &playersDead);
+		enemyManager->Update(deltaTime, player, &playersDead, audioSystem);
 	}
 
 	glutPostRedisplay();

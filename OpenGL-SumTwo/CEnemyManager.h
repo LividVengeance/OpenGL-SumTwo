@@ -2,6 +2,7 @@
 #include "CEnemy.h"
 #include "CPlayer.h"
 #include "CTextLabel.h"
+#include "CAudio.h"
 
 class CEnemyManager
 {
@@ -10,7 +11,7 @@ public:
 	~CEnemyManager();
 
 	void Render();
-	void Update(float deltaTime, CPlayer* player, bool* playersDead);
+	void Update(float deltaTime, CPlayer* player, bool* playersDead, FMOD::System* audioSystem);
 	void NewEnemy();
 
 	CMesh* enemyMesh;

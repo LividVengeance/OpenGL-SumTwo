@@ -28,7 +28,7 @@ void CEnemyManager::Render()
 	}
 }
 
-void CEnemyManager::Update(float deltaTime, CPlayer* player, bool* playersDead)
+void CEnemyManager::Update(float deltaTime, CPlayer* player, bool* playersDead, FMOD::System* audioSystem)
 {
 	// Half the screen height plus half CEnemy sprite height 
 	int enemyLimit = (Utils::SCR_HEIGHT / 2) + 25;
@@ -41,11 +41,7 @@ void CEnemyManager::Update(float deltaTime, CPlayer* player, bool* playersDead)
 			// Deletes CEnemy if out of screen space
 			delete allEnemies[i];
 			allEnemies.erase(allEnemies.begin() + i);
-			i--;
 		}
-
-
-
 		if (!*playersDead)
 		{
 			// Collision check CPlayer with CEnemy
@@ -55,6 +51,8 @@ void CEnemyManager::Update(float deltaTime, CPlayer* player, bool* playersDead)
 				allEnemies[i]->objPosition.y < player->playerMesh->objPosition.y + 50)
 			{
 				player->playerLives--;
+				CAudio collideTrack("Resources/Audio/Thump.wav", audioSystem, false);
+				collideTrack.PlaySound();
 				if (player->playerLives <= 0)
 				{
 					*playersDead = true;
@@ -70,7 +68,17 @@ void CEnemyManager::Update(float deltaTime, CPlayer* player, bool* playersDead)
 				// Updates all CEnemys positions
 				allEnemies[i]->Update(deltaTime);
 			}
-		}		
+		}
+	}
+	// Delete rest of CEnemys when CPlayer dies
+	if (*playersDead)
+	{
+		for (int i = 0; i < allEnemies.size(); i++)
+		{
+			delete allEnemies[i];
+			allEnemies.erase(allEnemies.begin() + i);
+			i--;
+		}
 	}
 }
 
