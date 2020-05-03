@@ -54,6 +54,7 @@ CGameManager::CGameManager(int argc, char** argv)
 	scoreLabel = new CTextLabel("Score: 0", "Resources/Fonts/arial.ttf", glm::vec2(10.0f, 570.0f), glm::vec3(0.0f, 1.0f, 0.5f), 0.5f);
 	lifeLabel = new CTextLabel("Lives: 5", "Resources/Fonts/arial.ttf", glm::vec2(10.0f, 540.0f), glm::vec3(1.0f, 0.0f, 0.0f), 0.5f);
 	gameEndLabel = new CTextLabel("You are dead! - ", "Resources/Fonts/arial.ttf", glm::vec2((Utils::SCR_WIDTH/2) - 75, Utils::SCR_HEIGHT/2), glm::vec3(1.0f, 1.0f, 1.5f), 0.5f);
+	endPressLabel = new CTextLabel("Press 'SPACE' to start new game", "Resources/Fonts/arial.ttf", glm::vec2((Utils::SCR_WIDTH / 2) - 150, (Utils::SCR_HEIGHT / 2) - 25), glm::vec3(1.0f, 1.0f, 1.5f), 0.5f);
 
 	// Setup Enemy
 	enemyManager = new CEnemyManager(gameCamera, program);
@@ -97,6 +98,7 @@ void CGameManager::Render()
 	if (playersDead)
 	{
 		gameEndLabel->Render();
+		endPressLabel->Render();
 	}
 	else
 	{
@@ -155,6 +157,17 @@ void CGameManager::Update()
 		player->Update(&playersDead);
 
 		enemyManager->Update(deltaTime, player, &playersDead, audioSystem);
+	}
+	else
+	{
+		if (GameInputs->getKeyState(' ') == true)
+		{
+			playersDead = false;
+			gameScore = 0;
+			player = new CPlayer(GameInputs, gameCamera, program);
+			
+			
+		}
 	}
 
 	glutPostRedisplay();

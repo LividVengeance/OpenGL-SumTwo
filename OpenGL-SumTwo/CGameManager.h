@@ -62,6 +62,7 @@ private:
 	CTextLabel* scoreLabel;
 	CTextLabel* lifeLabel;
 	CTextLabel* gameEndLabel;
+	CTextLabel* endPressLabel;
 
 	GLfloat currentTime, previousTime, deltaTime;
 	GLint program;

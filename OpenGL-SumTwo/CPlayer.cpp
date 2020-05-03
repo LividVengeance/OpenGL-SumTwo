@@ -52,11 +52,6 @@ void CPlayer::moveInput(GLfloat deltaTime)
 			playerMesh->objPosition.y -= 200.0f * deltaTime;
 		}
 	}
-	// Shoot
-	if (PlayerInputs->getKeyState(' ') == true)
-	{
-		std::cout << "Player Shoot Meme" << std::endl;
-	}
 }
 
 void CPlayer::Render()
