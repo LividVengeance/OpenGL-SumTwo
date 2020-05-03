@@ -1,5 +1,7 @@
 #pragma once
 #include "CEnemy.h"
+#include "CPlayer.h"
+#include "CTextLabel.h"
 
 class CEnemyManager
 {
@@ -8,7 +10,7 @@ public:
 	~CEnemyManager();
 
 	void Render();
-	void Update(float deltaTime);
+	void Update(float deltaTime, CPlayer* player, bool* playersDead);
 	void NewEnemy();
 
 	CMesh* enemyMesh;

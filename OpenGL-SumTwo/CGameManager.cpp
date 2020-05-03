@@ -53,6 +53,7 @@ CGameManager::CGameManager(int argc, char** argv)
 	// Setup the UI
 	scoreLabel = new CTextLabel("Score: 0", "Resources/Fonts/arial.ttf", glm::vec2(10.0f, 570.0f), glm::vec3(0.0f, 1.0f, 0.5f), 0.5f);
 	lifeLabel = new CTextLabel("Lives: 5", "Resources/Fonts/arial.ttf", glm::vec2(10.0f, 540.0f), glm::vec3(1.0f, 0.0f, 0.0f), 0.5f);
+	gameEndLabel = new CTextLabel("You are dead! - ", "Resources/Fonts/arial.ttf", glm::vec2((Utils::SCR_WIDTH/2) - 75, Utils::SCR_HEIGHT/2), glm::vec3(1.0f, 1.0f, 1.5f), 0.5f);
 
 	// Setup Enemy
 	enemyManager = new CEnemyManager(gameCamera, program);
@@ -89,15 +90,24 @@ void CGameManager::Render()
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, value_ptr(view));
 
 	backgroundImage->Render();
-	enemyManager->Render();
-	player->Render();
 
 	GLint currentTimeLoc = glGetUniformLocation(program, "currentTime");
 	glUniform1f(currentTimeLoc, currentTime);
 
-	// Render UI Elements
-	scoreLabel->Render();
-	lifeLabel->Render();
+	
+	if (playersDead)
+	{
+		gameEndLabel->Render();
+	}
+	else
+	{
+		// Render UI Elements
+		scoreLabel->Render();
+		lifeLabel->Render();
+
+		player->Render();
+		enemyManager->Render();
+	}
 
 	glBindVertexArray(0);		// Unbinding VAO
 	glUseProgram(0);
@@ -117,7 +127,6 @@ void CGameManager::Update()
 	audioSystem->update();
 
 	timer += deltaTime;
-	std::cout << timer << std::endl;
 	// Adds another enemy for every 0.4 seconds
 	if (timer > 0.4f)
 	{
@@ -126,15 +135,28 @@ void CGameManager::Update()
 		enemyManager->NewEnemy();
 	}
 
-	// Updates the score label
-	std::string scoreStr = "Score: ";
-	scoreStr += std::to_string(gameScore);
-	scoreLabel->SetText(scoreStr);
-	
-	player->moveInput(deltaTime);
-	player->Update();
+	if (!playersDead)
+	{
+		// Updates the score label
+		std::string scoreStr = "Score: ";
+		scoreStr += std::to_string(gameScore);
+		scoreLabel->SetText(scoreStr);
 
-	enemyManager->Update(deltaTime);
+		// Updates the lives label
+		std::string livesStr = "Score: ";
+		livesStr += std::to_string(player->playerLives);
+		lifeLabel->SetText(livesStr);
+
+		// Updates the death label
+		std::string deathStr = "You are dead! - ";
+		deathStr += std::to_string(gameScore);
+		gameEndLabel->SetText(deathStr);
+
+		player->moveInput(deltaTime);
+		player->Update(&playersDead);
+
+		enemyManager->Update(deltaTime, player, &playersDead);
+	}
 
 	glutPostRedisplay();
 }

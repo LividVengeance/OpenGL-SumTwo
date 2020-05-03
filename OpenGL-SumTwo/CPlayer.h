@@ -1,3 +1,4 @@
+#pragma once
 #include "CInput.h"
 #include "CMesh.h"
 
@@ -10,7 +11,9 @@ public:
 	void moveInput(GLfloat deltaTime);
 
 	void Render();
-	void Update();
+	void Update(bool* playersDead);
+
+	int playerLives = 5;
 
 	vec3 playerPostion;
 	vec3 playerRotation;

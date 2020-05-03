@@ -64,7 +64,10 @@ void CPlayer::Render()
 	playerMesh->Render();
 }
 
-void CPlayer::Update()
+void CPlayer::Update(bool* playersDead)
 {
-	playerMesh->Update();
+	if (!*playersDead)
+	{
+		playerMesh->Update();
+	}
 }

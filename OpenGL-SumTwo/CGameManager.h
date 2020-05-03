@@ -45,6 +45,7 @@ public:
 
 private:
 	int gameScore = 0;
+	bool playersDead = false;
 
 	GLuint VBO, EBO, VAO;
 	FMOD::System* audioSystem;
@@ -60,6 +61,7 @@ private:
 
 	CTextLabel* scoreLabel;
 	CTextLabel* lifeLabel;
+	CTextLabel* gameEndLabel;
 
 	GLfloat currentTime, previousTime, deltaTime;
 	GLint program;

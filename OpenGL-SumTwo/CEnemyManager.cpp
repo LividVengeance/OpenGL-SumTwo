@@ -28,11 +28,49 @@ void CEnemyManager::Render()
 	}
 }
 
-void CEnemyManager::Update(float deltaTime)
+void CEnemyManager::Update(float deltaTime, CPlayer* player, bool* playersDead)
 {
+	// Half the screen height plus half CEnemy sprite height 
+	int enemyLimit = (Utils::SCR_HEIGHT / 2) + 25;
+
 	for (int i = 0; i < allEnemies.size(); i++)
 	{
-		allEnemies[i]->Update(deltaTime);
+		// CEnemy outside screen space
+		if (allEnemies[i]->objPosition.y < -enemyLimit)
+		{
+			// Deletes CEnemy if out of screen space
+			delete allEnemies[i];
+			allEnemies.erase(allEnemies.begin() + i);
+			i--;
+		}
+
+
+
+		if (!*playersDead)
+		{
+			// Collision check CPlayer with CEnemy
+			if (allEnemies[i]->objPosition.x + 75 > player->playerMesh->objPosition.x&&
+				allEnemies[i]->objPosition.x		< player->playerMesh->objPosition.x + 50 &&
+				allEnemies[i]->objPosition.y + 50	> player->playerMesh->objPosition.y&&
+				allEnemies[i]->objPosition.y < player->playerMesh->objPosition.y + 50)
+			{
+				player->playerLives--;
+				if (player->playerLives <= 0)
+				{
+					*playersDead = true;
+					delete player;
+				}
+				// Deletes CEnemy on collision
+				delete allEnemies[i];
+				allEnemies.erase(allEnemies.begin() + i);
+				i--;
+			}
+			else
+			{
+				// Updates all CEnemys positions
+				allEnemies[i]->Update(deltaTime);
+			}
+		}		
 	}
 }
 

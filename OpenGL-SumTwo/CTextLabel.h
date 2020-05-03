@@ -16,6 +16,7 @@
 #include <iostream>
 
 #include "Utilities.h"
+#pragma once
 #include "CShaderLoader.h"
 
 struct FontChar
