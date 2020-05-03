@@ -10,7 +10,7 @@ CEnemyManager::CEnemyManager(CCamera* camera, GLint program)
 	float xSize = 75;
 	float ySize = 50;
 
-	const char* fileLocation = "Resources/Textures/Sprite-0004.png";
+	const char* fileLocation = "Resources/Textures/EnemySprite.png";
 	enemyMesh = new CMesh(enemyProgram, enemyCamera, xSize, ySize, fileLocation);
 
 	NewEnemy();

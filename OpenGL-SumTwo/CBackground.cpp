@@ -5,7 +5,7 @@ CBackground::CBackground(GLint program, CCamera* camera)
 	float xSize = Utils::SCR_WIDTH;
 	float ySize = Utils::SCR_HEIGHT;
 
-	const char* fileLocation = "Resources/Textures/Sprite-0002.png";
+	const char* fileLocation = "Resources/Textures/BackgroundSprite.png";
 	backgroundMesh = new CMesh(program, camera, xSize, ySize, fileLocation);
 }
 
